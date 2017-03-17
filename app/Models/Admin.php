@@ -1,9 +1,13 @@
 <?php
 namespace App\Models;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
 class Admin extends Authenticatable
 {
+    use EntrustUserTrait; // add this trait to your user model
     //
     protected $table = 'admins';
     use Notifiable;

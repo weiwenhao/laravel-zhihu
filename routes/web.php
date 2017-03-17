@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
 
 Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.admin'] ], function () {
     Route::get('/',function (){
+//        dd(auth('admin')->user()->hasRole('admin'));
         return view('admin.index');
     });
 });
