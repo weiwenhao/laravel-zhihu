@@ -20,9 +20,20 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 
+Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
+    //登录方面路由
+    Route::get('login','Auth\LoginController@showLoginForm');
+    Route::post('login','Auth\LoginController@login');
+
+    //注册入口已经关闭
+    Route::get('register','Auth\RegisterController@showRegistrationForm');
+    Route::post('register','Auth\RegisterController@register');
+
+    Route::post('logout','Auth\LoginController@logout');
+});
 
 
-Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>[] ], function () {
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.admin'] ], function () {
     Route::get('/',function (){
         return view('admin.index');
     });

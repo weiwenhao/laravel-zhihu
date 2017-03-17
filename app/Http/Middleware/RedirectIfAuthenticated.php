@@ -18,7 +18,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            //如果已经登录,再次进入登录界面或者注册界面,则 根据不同 guard 跳转到不同的页面
+            $url = $guard ? "/$guard":'/';
+            return redirect($url);
         }
 
         return $next($request);
