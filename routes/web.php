@@ -24,8 +24,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     //登录方面路由
     Route::get('login','Auth\LoginController@showLoginForm');
     Route::post('login','Auth\LoginController@login');
-
-    //注册入口已经关闭
+    //注册入口
     Route::get('register','Auth\RegisterController@showRegistrationForm');
     Route::post('register','Auth\RegisterController@register');
 
@@ -38,4 +37,6 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
 //        dd(auth('admin')->user()->hasRole('admin'));
         return view('admin.index');
     });
+    //权限管理
+    Route::resource('permission','PermissionController');
 });

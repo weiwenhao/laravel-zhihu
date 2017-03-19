@@ -38,8 +38,12 @@ class EntrustSetupTables extends Migration
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('display_name')->nullable();
+            $table->string('name')->nullable();
+            $table->string('display_name');
+            $table->string('url')->nullable()->default('')->comment('权限链接');
+            $table->integer('sort')->default('100')->comment('权重');
+            $table->string('icon')->nullable()->default('')->comment('图标');
+            $table->unsignedTinyInteger('parent_id')->default('0')->comment('父级id');
             $table->string('description')->nullable();
             $table->timestamps();
         });

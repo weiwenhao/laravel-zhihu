@@ -1,11 +1,17 @@
+window.Vue = require('vue');
 
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * We'll load the axios HTTP library which allows us to easily issue requests
+ * to our Laravel back-end. This library automatically handles sending the
+ * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-require('./bootstrap');
+window.axios = require('axios');
+
+window.axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': window.Laravel.csrfToken,
+    'X-Requested-With': 'XMLHttpRequest'
+};
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -20,6 +26,8 @@ Vue.use(ElementUI) //注册为vue的全局组件了
 
 Vue.component('example', require('./components/Example.vue'));
 
+/*
 const app = new Vue({
     el: '#app',
 });
+*/

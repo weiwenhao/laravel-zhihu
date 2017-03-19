@@ -30,7 +30,7 @@ class RolesTableSeeder extends Seeder
         // 普通管理
         $permList = Permission::where('display_name','权限列表')->first();
         $PermCreate = Permission::where('name','perm.create')->first();
-        $menuList = Permission::where('name','menu.list')->first();
+        $menuList = Permission::where('name','role.list')->first();
         $user->attachPermissions([$permList,$PermCreate,$menuList]); //entrust自带的添加多对多的方法,直接填入模型
 
     }
