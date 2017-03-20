@@ -7,25 +7,53 @@
 @section('content')
     <!-- Main content -->
     <section class="content">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> {{ session('success') }}</h4>
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-warning"></i> {{ session('error') }}</h4>
+            </div>
+        @endif
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Title</h3>
-
+                <h3 class="box-title">权限列表</h3>
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                        <i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                        <i class="fa fa-times"></i></button>
+                    <a href="{{ url('/admin/permission/create') }}" class="btn btn-success" title="Collapse">
+                        <i class="fa fa-plus"></i>
+                    </a>
                 </div>
             </div>
             <div class="box-body">
-                <el-tree
-                        :data="data2"
-                        :props="defaultProps"
-                        node-key="id"
-                            default-expand-all>
-                </el-tree>
-
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>权限名称</th>
+                        <th style="width: 20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($perm_list as $perm)
+                        <tr>
+                            <td>{{ $perm->id }}</td>
+                            <td>{{ str_repeat('- - - - | ',$perm->level).$perm->display_name }}</td>
+                            <td>
+                                <a href="{{ url('/admin/permission/'.$perm->id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                <form action="{{ url('/admin/permission/'.$perm->id) }}" method="post" style="display: inline">
+                                    {{ csrf_field() }} {{ method_field('delete') }}
+                                    <button type="submit" class="btn btn-danger" onclick="javascript:return confirm('该权限的子权限将一并删除, 你确定要删除该权限吗?')">
+                                        <i class="fa  fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
             <!-- /.box-body -->
             <!-- /.box-footer-->
@@ -38,28 +66,13 @@
     var app = new Vue({
         el: '#app',
         data : {
-            data2: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    },{
-                        id: 11,
-                        label: '测试'
-                    }]
-                }]
-            }],
-            defaultProps: {
-                children: 'children',
-                label: 'label'
-            }
+
+        },
+        created(){
+
+        },
+        methods : {
+
         }
     });
 </script>

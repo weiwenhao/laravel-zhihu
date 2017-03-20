@@ -38,5 +38,6 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
         return view('admin.index');
     });
     //权限管理
+    Route::get('/permission/get_nest_perm_list','PermissionController@getNestPermList');
     Route::resource('permission','PermissionController');
 });

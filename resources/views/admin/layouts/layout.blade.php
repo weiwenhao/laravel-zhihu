@@ -226,9 +226,9 @@
 <!-- FastClick -->
 <script src="/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="/back/js/app.min.js"></script>@
-{{--<!-- AdminLTE for demo purposes -->
-<script src="/back/js/demo.js"></script>--}}
+<script src="/back/js/app.min.js"></script>
+<script src="/back/js/demo.js"></script>
+{{--webpack打包js--}}
 <script src="/js/admin.js"></script>
 @yield('js')
 </body>

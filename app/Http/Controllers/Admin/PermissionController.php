@@ -27,9 +27,19 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('admin.permission.list');
+        $perm_list = $this->permission->getPermList(['id', 'display_name', 'parent_id']);
+        return view('admin.permission.list', compact('perm_list'));
     }
 
+    /**
+     * 得到嵌套的权限列表, 提供树形结构使用
+     * @return mixed
+     */
+    public function getNestPermList()
+    {
+        $res = $this->permission->getNestPermList(['id', 'display_name', 'parent_id']);
+        return $res;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -38,7 +48,7 @@ class PermissionController extends Controller
     public function create()
     {
         $perm_list = $this->permission->getPermList(['id', 'display_name', 'parent_id']);
-        return view('admin.permission.create',compact('perm_list'));
+        return view('admin.permission.create', compact('perm_list'));
     }
 
     /**
@@ -50,10 +60,9 @@ class PermissionController extends Controller
     public function store(PermissionRequest $request)
     {
         $res = $this->permission->create($request->all());
+        if(!$res)
+            return redirect('/admin/permission/create')->withInput()->with('error', '系统错误，添加失败');
         \Cache::forget('perm_list');
-        if(!$res){
-            return redirect('/admin/permission/create')->with('error','系统错误，添加失败')->withInput($request->all());
-        }
         return redirect('/admin/permission')->withSuccess('添加成功');
     }
 
@@ -76,19 +85,26 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $perm_child_ids = $this->permission->getChildPermIds($id);
+        $perm_list = $this->permission->getPermList(['id', 'display_name', 'parent_id']);
+        $perm = $this->permission->find($id);
+        return view('admin.permission.edit',compact('perm','perm_list','perm_child_ids'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param PermissionRequest $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PermissionRequest $request, $id)
     {
-        //
+        $res = $this->permission->update($request->all(), $id);
+        if (!$res)
+            return redirect('/admin/permission/'.$id.'/edit')->withInput()->withError('系统错误，修改失败');
+        \Cache::forget('perm_list');//刷新缓存
+        return redirect('/admin/permission')->withSuccess('修改成功');
     }
 
     /**
@@ -99,6 +115,12 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $perm_child_ids = $this->permission->getChildPermIds($id);
+        $res = $this->permission->delete($perm_child_ids); //返回删除的记录数
+        if(!$res){
+            return redirect('/admin/permission')->withError('删除失败');
+        }
+        \Cache::forget('perm_list');
+        return redirect('/admin/permission')->withSuccess('删除成功');
     }
 }
