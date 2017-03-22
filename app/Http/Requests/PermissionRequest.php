@@ -29,9 +29,9 @@ class PermissionRequest extends FormRequest
         //三级权限, 无图标,无url
         $rules =  [
             'display_name'=>'required|unique:permissions,display_name',
-            'sort' => 'sometimes|integer',
+            'sort' => 'nullable|integer',
             'parent_id' => 'integer',
-            'description' => 'sometimes|max:20'
+            'description' => 'nullable|max:20'
         ];
         if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
             $id = Request::get('id');

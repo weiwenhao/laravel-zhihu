@@ -43,4 +43,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
     //角色管理
     Route::get('/role/dt_roles','RoleController@DtRoles');
     Route::resource('role','RoleController');
+    //管理员管理
+    Route::get('/admin/dt_admins','AdminController@DtAdmins');
+    Route::resource('admin','AdminController');
 });

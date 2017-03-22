@@ -27,7 +27,7 @@
 
                 <div class="box-tools pull-right">
                     <div class="box-tools pull-right">
-                        <a href="{{ url('/admin/role/create') }}" class="btn bg-olive" title="Collapse">
+                        <a href="{{ url('/admin/admin/create') }}" class="btn bg-olive" title="Collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -38,9 +38,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>角色值</th>
-                        <th>角色名称</th>
-                        <th>描述</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>角色</th>
                         <th>创建时间</th>
                         <th>修改时间</th>
                         <th>操作</th>
@@ -88,7 +88,7 @@
             }, //语言国际化
             "order": [[ 0, "desc" ]],
             "serverSide": true,//开启服务器模式
-            'processing': true,
+            processing: true,
             "searchDelay": 1000, //搜索框请求间隔
             // "lengthMenu": [15,25,50], //自定义每页显示条数菜单
 
@@ -96,7 +96,7 @@
                 "regex": true  //正则搜索还是精确搜索
             },
             "ajax": {
-                "url" : '/admin/role/dt_roles',
+                "url" : '/admin/admin/dt_admins',
             },
             "columns": [
                 {
@@ -106,18 +106,12 @@
                     'data':'name',
                 },
                 {
-                    'data':'display_name',
+                    'data':'email',
                     "orderable" : false,
                 },
                 {
-                    'data':'description',
+                    'data':'roles',
                     "orderable" : false,
-                    render : function (data, type, row, meta) {
-                        if(data){
-                            return '<div style="width:100px;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;">'+data+'</div>';
-                        }
-                        return '暂无';
-                    }
                 },
                 {
                     searchable: false,
@@ -133,7 +127,7 @@
                     "orderable" : false, //是否开启排序
                     'width' : '20%',
                     render: function(data, type, row, meta) {
-                        return "<a href='/admin/role/"+row.id+"/edit' class='btn btn-xs btn-info edit'><i class='fa fa-edit'></i>  修改</a>  " +
+                        return "<a href='/admin/admin/"+row.id+"/edit' class='btn btn-xs btn-info edit'><i class='fa fa-edit'></i>  修改</a>  " +
                             "<button value="+row.id+" class='btn btn-xs btn-danger del'><i class='fa fa-trash'></i>  删除</button>";
                     }
                 }
@@ -150,7 +144,7 @@
             }
         });
         $('body').on('click', 'button.del', function() {
-            var url = '/admin/role/'+$(this).val(); //this代表删除按钮的DOM对象
+            var url = '/admin/admin/'+$(this).val(); //this代表删除按钮的DOM对象
             if( !confirm('你确定要删除该角色吗?')){
                 return false;
             }

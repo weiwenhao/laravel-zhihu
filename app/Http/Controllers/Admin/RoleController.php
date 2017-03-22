@@ -67,7 +67,7 @@ class RoleController extends Controller
     {
         $role = $this->role->create($request->all());
         if (!$role){
-            return redirect('/admin/role/create')->withError('添加失败')->withInput();
+            return redirect('/admin/role/create')->withError('系统错误,添加失败')->withInput();
         }
         $role->perms()->attach($request->get('perm_ids'));
         return redirect('/admin/role')->withSuccess('添加成功');
@@ -94,7 +94,7 @@ class RoleController extends Controller
     {
         $perms = $this->permission->getPermList(['id', 'display_name', 'parent_id']);
         $role = $this->role->find($id);
-        $perm_ids = array_column($role->perms->toArray(),'id');
+        $perm_ids = $role->perms->pluck('id')->toArray();
         return view('admin.role.edit',compact('role','perms','perm_ids'));
     }
 
@@ -107,9 +107,9 @@ class RoleController extends Controller
     public function update(RoleRequest $request, $id)
     {
         $role = $this->role->update($request->all(),$id);
-        $role->perms()->sync($request->get('perm_ids',[]));
         if(!$role)
-            return redirect('/admin/role/'.$id.'/edit')->withError('修改失败')->withInput();
+            return redirect('/admin/role/'.$id.'/edit')->withError('系统错误,修改失败')->withInput();
+        $role->perms()->sync($request->get('perm_ids',[]));
         return redirect('/admin/role')->withSuccess('修改成功');
     }
 

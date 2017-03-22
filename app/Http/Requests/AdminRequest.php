@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
+use Request;
 
-class RoleRequest extends FormRequest
+class AdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,16 +28,14 @@ class RoleRequest extends FormRequest
         //二级权限, 无图标,有url
         //三级权限, 无图标,无url
         $rules =  [
-            'name' => 'required|unique:roles,name|alpha',
-            'display_name' => 'required|unique:roles,display_name',
-            'description' => 'nullable|max:20',
-            /*'perm_ids.*' => 'required|in_array:1,2,3,4'*/
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:admins',
+            'password' => 'required|min:6|confirmed',
         ];
         if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
-            $id = Request::get('id');
             $rules['id'] = 'required';
-            $rules['name'] = 'required|alpha|unique:roles,name,'.$id;
-            $rules['display_name'] = 'required|unique:roles,display_name,'.$id;
+            $rules['email'] = 'required|email|max:255|unique:admins,email,'.Request::get('id');
+            $rules['password'] = 'nullable|min:6|confirmed'; //nullable 代表字段为空时满足条件,否则进行后续的验证
         }
         return $rules;
     }
@@ -49,11 +47,7 @@ class RoleRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => '角色值不能为空。',
-            'name.unique' => '角色值已经存在。',
-            'display_name.required' => '角色名称必须填写。',
-            'display_name.unique' => '角色名称已经存在。',
-
+            'name.required' => '用户名不能为空。',
         ];
     }
 }

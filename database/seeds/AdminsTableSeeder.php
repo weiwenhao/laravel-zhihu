@@ -15,14 +15,12 @@ class AdminsTableSeeder extends Seeder
         $weiwenhao = \App\Models\Admin::create([
             'name' => 'weiwenhao',
             'email' => '1101140857@qq.com',
-            'password' => bcrypt('123456'),
-            'remember_token' => str_random(10),
+            'password' => '123456',
         ]);
         $xiaowei = \App\Models\Admin::create([
             'name' => 'xiaowei',
             'email' => '123@123.com',
-            'password' => bcrypt('123456'),
-            'remember_token' => str_random(10),
+            'password' => '123456',
         ]);
         //分配角色
         $admin = \App\Models\Role::where('name','admin')->first();

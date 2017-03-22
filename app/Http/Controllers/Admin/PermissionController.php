@@ -122,7 +122,7 @@ class PermissionController extends Controller
         $perm_child_ids = $this->permission->getChildPermIds($id);
         $res = $this->permission->delete($perm_child_ids); //返回删除的记录数
         if(!$res){
-            return redirect('/admin/permission')->withError('删除失败');
+            return redirect('/admin/permission')->withError('系统错误,删除失败');
         }
         \Cache::forget('perm_list');
         return redirect('/admin/permission')->withSuccess('删除成功');

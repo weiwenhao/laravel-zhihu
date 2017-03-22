@@ -81,7 +81,7 @@
                         <div class="form-group {{ $errors->has('sort')?'has-error':'' }}">
                             <label class="col-md-3 control-label" for="inputError">权重</label>
                             <div class="col-md-6">
-                                <input type="text" name="sort" value="{{ old('sort',100) }}" class="form-control" id="inputError" placeholder="">
+                                <input type="text" name="sort" value="{{ old('sort') }}" class="form-control" id="inputError" placeholder="">
                                 @if($errors->has('sort'))
                                     <span class="help-block">{{ $errors->first('sort') }}</span>
                                 @endif
