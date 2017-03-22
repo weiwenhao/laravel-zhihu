@@ -115,6 +115,10 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
+        /**
+         * 删除成功permssion后 应该同时删除 permssion_role表中的含有被删除的permssion_id的记录
+         * 但是permssion_id 参考了 permssion表的id数据,并且添加了删除伴随,所以删除id的同时,会自动删除permssion中的记录
+         */
         $perm_child_ids = $this->permission->getChildPermIds($id);
         $res = $this->permission->delete($perm_child_ids); //返回删除的记录数
         if(!$res){

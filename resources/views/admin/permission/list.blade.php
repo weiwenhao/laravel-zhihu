@@ -22,7 +22,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">权限列表</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ url('/admin/permission/create') }}" class="btn btn-success" title="Collapse">
+                    <a href="{{ url('/admin/permission/create') }}" class="btn bg-olive" title="Collapse">
                         <i class="fa fa-plus"></i>
                     </a>
                 </div>

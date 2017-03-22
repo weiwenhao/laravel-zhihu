@@ -40,4 +40,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
     //权限管理
     Route::get('/permission/get_nest_perm_list','PermissionController@getNestPermList');
     Route::resource('permission','PermissionController');
+    //角色管理
+    Route::get('/role/dt_roles','RoleController@DtRoles');
+    Route::resource('role','RoleController');
 });

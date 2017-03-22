@@ -65,7 +65,7 @@ class PermissionRepository extends Repository
         return $newArray;
     }
 
-   /* public function getNestPermList($columns=['*'])
+    public function getNestPermList($columns=['*'])
     {
         $res = \Cache::remember('nest_perm_list',60,function () use ($columns) {
             return  $this->sortNestPermList($this->model->get($columns));
@@ -82,5 +82,5 @@ class PermissionRepository extends Repository
             }
         }
         return $newArray;
-    }*/
+    }
 }

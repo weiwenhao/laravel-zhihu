@@ -50,7 +50,9 @@
                                 <select name="parent_id" id="" class="form-control">
                                     <option value="0">请选择</option>
                                     @foreach($perm_list as $key => $value)
-                                        <option value="{{ $value->id }}" {{ $value->id == old('parent_id')?'selected':'' }}>{{ str_repeat('- - - - | ',$value->level).$value->display_name }}</option>
+                                        <option value="{{ $value->id }}" {{ $value->id == old('parent_id')?'selected':'' }}>
+                                            {{ str_repeat('- - - - | ',$value->level).$value->display_name }}
+                                        </option>
                                     @endforeach
                                     @if($errors->has('parent_id'))
                                         <span class="help-block">{{ $errors->first('parent_id') }}</span>

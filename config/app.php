@@ -183,6 +183,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         //entrust
         Zizaco\Entrust\EntrustServiceProvider::class,
+        //datatables
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 

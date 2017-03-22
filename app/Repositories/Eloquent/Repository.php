@@ -60,7 +60,9 @@ abstract class Repository implements RepositoryInterface
      */
     public function update(array $data, $id) {
         $model = $this->model->findOrFail($id);
-        return $model->update($data);
+        if ($model->update($data))
+            return $model;
+        return false;
     }
     /**
      * @param $id
