@@ -18,7 +18,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">管理员信息修改</h3>
+                <h3 class="box-title">用户信息修改</h3>
 
                 <div class="box-tools pull-right">
                    {{--todo--}}

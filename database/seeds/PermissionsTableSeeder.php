@@ -26,37 +26,37 @@ class PermissionsTableSeeder extends Seeder
          * 角色管理
          */
         $admin = Permission::create([
-            'name' => 'admin.index',
-            'display_name' => '管理员管理',
-            'url' => '/admin',
+            'name' => 'admin.list',
+            'display_name' => '用户列表',
+            'url' => 'admin',
             'parent_id' => $rabc->id,
-            'description' => '管理员管理',
+            'description' => '用户列表',
         ]);
         Permission::create([
             'name' => 'admin.create',
-            'display_name' => '添加管理员',
+            'display_name' => '添加用户',
             'parent_id' => $admin->id,
-            'description' => '添加管理员',
+            'description' => '添加用户',
         ]);
         Permission::create([
             'name' => 'admin.edit',
-            'display_name' => '修改管理员',
+            'display_name' => '修改用户',
             'parent_id' => $admin->id,
-            'description' => '修改管理员',
+            'description' => '修改用户',
         ]);
         Permission::create([
             'name' => 'admin.destroy',
-            'display_name' => '删除管理员',
+            'display_name' => '删除用户',
             'parent_id' => $admin->id,
-            'description' => '删除管理员',
+            'description' => '删除用户',
         ]);
 
         $role = Permission::create([
-            'name' => 'role.index',
-            'display_name' => '角色管理',
-            'url' => '/role',
+            'name' => 'role.list',
+            'display_name' => '角色列表',
+            'url' => 'role',
             'parent_id' => $rabc->id,
-            'description' => '角色管理',
+            'description' => '角色列表',
         ]);
         Permission::create([
             'name' => 'role.create',
@@ -78,11 +78,11 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         $perm = Permission::create([
-            'name' => 'permission.index',
-            'display_name' => '权限管理',
-            'url' => '/permission',
+            'name' => 'permission.list',
+            'display_name' => '权限列表',
+            'url' => 'permission',
             'parent_id' => $rabc->id,
-            'description' => '权限管理',
+            'description' => '权限列表',
         ]);
         Permission::create([
             'name' => 'permission.create',

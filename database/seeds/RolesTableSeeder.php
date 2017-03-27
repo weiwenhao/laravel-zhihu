@@ -28,10 +28,11 @@ class RolesTableSeeder extends Seeder
         $allPermission = array_column(Permission::all()->toArray(), 'id'); // [1,3,4]
         $admin->perms()->sync($allPermission); //给admin用户同步所有权限
         // 普通管理
+        $rabc = Permission::where('display_name','RABC')->first();
         $permList = Permission::where('display_name','权限列表')->first();
-        $PermCreate = Permission::where('name','perm.create')->first();
-        $menuList = Permission::where('name','role.list')->first();
-        $user->attachPermissions([$permList,$PermCreate,$menuList]); //entrust自带的添加多对多的方法,直接填入模型
+        $permCreate = Permission::where('name','permission.create')->first();
+        $roleList = Permission::where('name','role.list')->first();
+        $user->attachPermissions([$permList,$permCreate,$roleList,$rabc]); //entrust自带的添加多对多的方法,直接填入模型
 
     }
 }

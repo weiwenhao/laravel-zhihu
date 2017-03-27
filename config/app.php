@@ -185,6 +185,10 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         //datatables
         Yajra\Datatables\DatatablesServiceProvider::class,
+        //viewComposer,容器创建时会被运行
+        App\Providers\ComposerServiceProvider::class,
+        //导航高亮
+        HieuLe\Active\ActiveServiceProvider::class,
 
     ],
 
@@ -236,6 +240,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Active' => HieuLe\Active\Facades\Active::class,
     ],
 
 ];

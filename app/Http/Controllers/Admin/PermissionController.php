@@ -4,20 +4,27 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PermissionRequest;
 use App\Repositories\PermissionRepository;
+use App\Repositories\RoleRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PermissionController extends Controller
 {
     protected $permission;
+    /**
+     * @var RoleRepository
+     */
+    private $role;
 
     /**
      * PermissionController constructor.
-     * @param $permission
+     * @param PermissionRepository $permission
+     * @param RoleRepository $role
      */
-    public function __construct(PermissionRepository $permission)
+    public function __construct(PermissionRepository $permission, RoleRepository $role)
     {
         $this->permission = $permission;
+        $this->role = $role;
     }
 
     /**
@@ -59,10 +66,21 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request)
     {
-        $res = $this->permission->create($request->all());
-        if(!$res)
+        $perm = $this->permission->create($request->all());
+
+        /*//将该权限分配给超级管理员  permission_role ,role特指'admin',即超级管理员,超级管理员不可删除
+        $admin_role_name = config('admin.admin_role_name','admin');
+        $role = $this->role->firstBy('name',$admin_role_name);
+        if ($role){
+            $role->perms()->attach($perm->id);
+            //释放permission_role中间表的缓存,为什么要自己手动释放??
+            \Cache::tags(\Config::get('entrust.permission_role_table'))->flush();
+        }*/
+
+        if(!$perm)
             return redirect('/admin/permission/create')->withInput()->with('error', '系统错误，添加失败');
         \Cache::forget('perm_list');
+        \Cache::forget('nest_perm_list');
         return redirect('/admin/permission')->withSuccess('添加成功');
     }
 
@@ -104,6 +122,7 @@ class PermissionController extends Controller
         if (!$res)
             return redirect('/admin/permission/'.$id.'/edit')->withInput()->withError('系统错误，修改失败');
         \Cache::forget('perm_list');//刷新缓存
+        \Cache::forget('nest_perm_list');
         return redirect('/admin/permission')->withSuccess('修改成功');
     }
 
@@ -125,6 +144,7 @@ class PermissionController extends Controller
             return redirect('/admin/permission')->withError('系统错误,删除失败');
         }
         \Cache::forget('perm_list');
+        \Cache::forget('nest_perm_list');
         return redirect('/admin/permission')->withSuccess('删除成功');
     }
 }

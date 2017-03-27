@@ -41,9 +41,9 @@ class EntrustSetupTables extends Migration
             $table->string('name')->nullable();
             $table->string('display_name');
             $table->string('url')->nullable()->default('')->comment('权限链接');
-            $table->integer('sort')->default('100')->comment('权重');
+            $table->unsignedInteger('sort')->nullable()->default(100)->comment('权重');
             $table->string('icon')->nullable()->default('')->comment('图标');
-            $table->unsignedTinyInteger('parent_id')->default('0')->comment('父级id');
+            $table->unsignedInteger('parent_id')->default('0')->comment('父级id');
             $table->string('description')->nullable();
             $table->timestamps();
         });

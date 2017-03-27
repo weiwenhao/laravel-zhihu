@@ -121,7 +121,10 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $res = $this->role->delete($id);
-        return $res;
+        $role = $this->role->find($id);
+        if (!$role || $role->name == config('admin.admin_role_name','admin'))
+            return response('删除失败',403);
+        $res = $role->delete();
+        return (string) $res;
     }
 }

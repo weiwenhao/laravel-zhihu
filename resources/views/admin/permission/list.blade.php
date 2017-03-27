@@ -63,17 +63,6 @@
 @stop
 @section('js')
 <script>
-    var app = new Vue({
-        el: '#app',
-        data : {
 
-        },
-        created(){
-
-        },
-        methods : {
-
-        }
-    });
 </script>
 @stop

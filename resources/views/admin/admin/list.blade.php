@@ -23,7 +23,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">角色列表</h3>
+                <h3 class="box-title">用户列表</h3>
 
                 <div class="box-tools pull-right">
                     <div class="box-tools pull-right">
@@ -125,10 +125,10 @@
                     searchable: false,
                     'data' : null, //对应服务器端
                     "orderable" : false, //是否开启排序
-                    'width' : '20%',
+                    'width' : '15%',
                     render: function(data, type, row, meta) {
-                        return "<a href='/admin/admin/"+row.id+"/edit' class='btn btn-xs btn-info edit'><i class='fa fa-edit'></i>  修改</a>  " +
-                            "<button value="+row.id+" class='btn btn-xs btn-danger del'><i class='fa fa-trash'></i>  删除</button>";
+                        return "<a href='/admin/admin/"+row.id+"/edit' class='btn btn-info edit'><i class='fa fa-edit'></i></a>  " +
+                            "<button value="+row.id+" class='btn btn-danger del'><i class='fa fa-trash'></i></button>";
                     }
                 }
 

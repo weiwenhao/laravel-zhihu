@@ -131,10 +131,13 @@
                     searchable: false,
                     'data' : null, //对应服务器端
                     "orderable" : false, //是否开启排序
-                    'width' : '20%',
+                    'width' : '15%',
                     render: function(data, type, row, meta) {
-                        return "<a href='/admin/role/"+row.id+"/edit' class='btn btn-xs btn-info edit'><i class='fa fa-edit'></i>  修改</a>  " +
-                            "<button value="+row.id+" class='btn btn-xs btn-danger del'><i class='fa fa-trash'></i>  删除</button>";
+                        if(row.name == 'admin'){
+                            return "<a href='/admin/role/"+row.id+"/edit' class='btn btn-info edit'><i class='fa fa-edit'></i></a>";
+                        }
+                        return "<a href='/admin/role/"+row.id+"/edit' class='btn btn-info edit'><i class='fa fa-edit'></i></a>  " +
+                            "<button value="+row.id+" class='btn btn-danger del'><i class='fa fa-trash'></i></button>";
                     }
                 }
 
@@ -158,11 +161,14 @@
                 type: "DELETE",
                 url: url,
                 success: function(data){
-                    if (data){
+                    if (data == 1){
                         //刷新dt
                         table.ajax.reload(null, false); //databales对象从新加载
                         alert('删除成功');
                     }
+                },
+                error : function (errors) {
+                     alert(errors.responseText);
                 }
             });
         });

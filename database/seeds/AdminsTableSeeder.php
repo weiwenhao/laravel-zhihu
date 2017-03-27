@@ -25,7 +25,7 @@ class AdminsTableSeeder extends Seeder
         //分配角色
         $admin = \App\Models\Role::where('name','admin')->first();
         $user = \App\Models\Role::where('name','user')->first();
-        $weiwenhao->roles()->attach($admin->id);
-        $xiaowei->roles()->attach($user->id);
+        $weiwenhao->roles()->attach($admin->id); //超级管理员
+        $xiaowei->roles()->attach($user->id);   //普通用户
     }
 }

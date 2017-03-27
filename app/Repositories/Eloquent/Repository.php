@@ -85,7 +85,19 @@ abstract class Repository implements RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    public function findBy($attribute, $value, $columns = array('*')) {
+    public function findBy($attribute, $value, $columns = array('*'))
+    {
         return $this->model->where($attribute, '=', $value)->get($columns);
+    }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function firstBy($attribute, $value, $columns = array('*'))
+    {
+        return $this->model->where($attribute, '=', $value)->first($columns);
     }
 }

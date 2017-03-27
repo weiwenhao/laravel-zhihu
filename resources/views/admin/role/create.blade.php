@@ -11,7 +11,6 @@
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">添加角色</h3>
-
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                         <i class="fa fa-minus"></i></button>
@@ -19,14 +18,6 @@
                         <i class="fa fa-times"></i></button>
                 </div>
             </div>
-                {{--<el-tree
-                        :data="perms"
-                        show-checkbox
-                        node-key="id"
-                        ref="tree"
-                        :props="defaultProps">
-                </el-tree>
-                <el-button @click="getCheckedKeys">通过 key 获取</el-button>--}}
             <form action="{{ url('/admin/role') }}" method="post" class="form-horizontal">
                 <div class="box-body">
                     <div class="col-md-10 col-md-offset-1">

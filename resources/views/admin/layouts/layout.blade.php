@@ -232,6 +232,20 @@
 <script src="/back/js/demo.js"></script>
 {{--webpack打包js--}}
 <script src="/js/admin.js"></script>
+<script>
+    /**
+     * 菜单高亮
+     */
+    $('li.menu.active').parent().parent().addClass('active');
+
+    /**
+     * 弹出框3秒自动消失
+     */
+    function alertHide() {
+        $('div.alert').fadeOut('1000');
+    }
+    setTimeout('alertHide()',2000);
+</script>
 @yield('js')
 </body>
 </html>

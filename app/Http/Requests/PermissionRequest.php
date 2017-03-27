@@ -28,14 +28,16 @@ class PermissionRequest extends FormRequest
         //二级权限, 无图标,有url
         //三级权限, 无图标,无url
         $rules =  [
+            'name' => 'sometimes|required|unique:permissions,display_name',
             'display_name'=>'required|unique:permissions,display_name',
-            'sort' => 'nullable|integer',
+            'sort' => 'sometimes|integer',
             'parent_id' => 'integer',
-            'description' => 'nullable|max:20'
+            'description' => 'sometimes|nullable|max:20'
         ];
         if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
             $id = Request::get('id');
-            $rules['id'] = 'required';
+            $rules['name'] = 'sometimes|required|unique:permissions,display_name,'.$id;
+            $rules['id'] = 'sometimes|required';
             $rules['display_name'] = 'required|unique:permissions,display_name,'.$id;
         }
         return $rules;
