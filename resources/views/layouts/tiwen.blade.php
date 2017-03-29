@@ -118,7 +118,7 @@
                     is_show_user : is_show_user
                 })
                     .then(response=> {
-                        if (response.data){
+                        if (response.data.id){
                             window.location.href = '/question/'+response.data.id
                         }
                     })

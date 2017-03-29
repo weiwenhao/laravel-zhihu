@@ -13,9 +13,13 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SomeEvent' => [
+        /*'App\Events\SomeEvent' => [ //事件可监听器之间的映射关系
             'App\Listeners\EventListener',
-        ],
+        ],*/
+        'App\Events\CreateQuestionEvent' => [
+            'App\Listeners\AttentionListener',
+            'App\Listeners\TopicQuesIncListener',
+        ]
     ];
 
     /**

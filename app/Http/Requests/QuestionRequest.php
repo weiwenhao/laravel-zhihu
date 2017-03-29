@@ -25,8 +25,7 @@ class QuestionRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'title' => 'required|max:20|unique:questions,title',
-            'title' => ['regex:/？|\?$/'],
+            'title' => ['required', 'max:20', 'unique:questions,title', 'regex:/？|\?$/', ],
             'topic_ids' => 'required',
         ];
         /*if (Request::isMethod('PATCH') || Request::isMethod('PUT')){

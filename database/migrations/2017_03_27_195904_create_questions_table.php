@@ -19,7 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->text('content')->nullable()->comment('问题说明');
             $table->unsignedInteger('user_id')->index()->comment('问题创建者');
             $table->unsignedInteger('answers_count')->default(0)->comment('该问题的答案数量');
-            $table->unsignedInteger('followers_count')->default(1)->comment('该问题的关注者数量');
+            $table->unsignedInteger('followers_count')->default(0)->comment('该问题的关注者数量');
             $table->unsignedInteger('browses_count')->default(1)->comment('该问题被浏览的次数');
             $table->unsignedTinyInteger('is_show')->default(1)->index()->comment('是否显示改问题');
             $table->unsignedTinyInteger('is_show_user')->default(1)->index()->comment('是否公开姓名');
@@ -28,7 +28,6 @@ class CreateQuestionsTable extends Migration
 
         //question_topic
         Schema::create('question_topic', function (Blueprint $table) {
-            $table->increments('id');
             $table->unsignedInteger('question_id')->index();
             $table->unsignedInteger('topic_id')->index();
             $table->timestamps();
