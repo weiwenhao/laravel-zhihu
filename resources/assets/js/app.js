@@ -13,13 +13,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// 引入element组件库
-
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-Vue.use(ElementUI) //注册为vue的全局组件了
-
-Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
     el: '#app',

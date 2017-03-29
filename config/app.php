@@ -189,6 +189,8 @@ return [
         App\Providers\ComposerServiceProvider::class,
         //导航高亮
         HieuLe\Active\ActiveServiceProvider::class,
+        //百度富文本编辑器
+        Overtrue\LaravelUEditor\UEditorServiceProvider::class,
 
     ],
 

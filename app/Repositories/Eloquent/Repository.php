@@ -100,4 +100,15 @@ abstract class Repository implements RepositoryInterface
     {
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findLike($attribute, $value, $columns = array('*'))
+    {
+        return $this->model->where($attribute, 'like', "%$value%")->get($columns);
+    }
 }

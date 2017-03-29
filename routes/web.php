@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     //登录
@@ -46,3 +42,10 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
     Route::get('/admin/dt_admins','AdminController@DtAdmins')->name('admin.index');;
     Route::resource('admin','AdminController');
 });
+
+//前台
+Route::get('/', 'IndexController@index');
+//select2数据源
+Route::get('/topic/select_res', 'TopicController@select_res');
+//问题存储
+Route::post('/question','QuestionController@store');

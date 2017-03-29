@@ -111,6 +111,9 @@
     <!-- Select2 -->
     <script src="/plugins/select2/select2.full.min.js"></script>
     <script>
-        $(".select2").select2();
+        $(".select2").select2({
+            placeholder: "请选择话题",
+            allowClear: true
+        });
     </script>
 @stop
