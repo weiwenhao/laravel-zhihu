@@ -43,9 +43,15 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
     Route::resource('admin','AdminController');
 });
 
-//前台
+//前台主页
 Route::get('/', 'IndexController@index');
-//select2数据源
+//topic 的 select2数据源
 Route::get('/topic/select_res', 'TopicController@select_res');
-//问题存储
+//存储问题
 Route::post('/question','QuestionController@store');
+//展示问题
+Route::get('/question/{id}','QuestionController@show');
+//用户是否关注了该问题
+Route::get('/question/{id}/is_attention', 'QuestionController@isAttention');
+//用户关注或者取消关注问题
+Route::post('/question/attention', 'QuestionController@attention');

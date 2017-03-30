@@ -9,7 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     {{--font-awesome--}}
@@ -20,6 +19,7 @@
             margin-top: 65px;
         }
     </style>
+    @yield('css')
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -81,10 +81,13 @@
                         <li>
                             <a class=""><i class="fa fa-comments"></i></a>
                         </li>
-                        {{--Auth::guest()--}}
-                        <li class="dropdown">
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/admin/login') }}">Login</a></li>
+                            <li><a href="{{ url('/admin/register') }}">Register</a></li>
+                        @else
+                            <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                               魏文豪 <span class="caret"></span>
+                                {{ auth()->user()->username }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -104,6 +107,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>

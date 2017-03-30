@@ -16,10 +16,6 @@ class EventServiceProvider extends ServiceProvider
         /*'App\Events\SomeEvent' => [ //事件可监听器之间的映射关系
             'App\Listeners\EventListener',
         ],*/
-        'App\Events\CreateQuestionEvent' => [
-            'App\Listeners\AttentionListener',
-            'App\Listeners\TopicQuesIncListener',
-        ]
     ];
 
     /**
@@ -31,6 +27,5 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
     }
 }
