@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "select2": "^4.0.3"
+    "select2": "^4.0.3",
+    "sweetalert": "^1.1.3"
   }
 }

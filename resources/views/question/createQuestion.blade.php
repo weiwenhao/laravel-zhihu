@@ -1,6 +1,6 @@
 {{--<link href="/plugins/select2/select2.css" rel="stylesheet">--}}
 {{--提问modal--}}
-<div class="modal fade" id="tiwen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="createQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,10 +85,10 @@
         ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
     });
     /*
-        问题提交
-    */
-    var tiwen = new Vue({
-        el : '#tiwen',
+     问题提交
+     */
+    var createQuestion = new Vue({
+        el : '#createQuestion',
         data : {
             title :'',
             is_show_user : 0,

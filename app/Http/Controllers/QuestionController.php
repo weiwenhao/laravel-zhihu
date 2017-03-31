@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AttentionQuestionEvent;
-use App\Events\CreateQuestionEvent;
-use App\Events\NoAttentionQuestionEvent;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Attention;
 use App\Models\Question;
@@ -65,10 +62,29 @@ class QuestionController extends Controller
 
     public function show($id)
     {
-        $question = $this->question->findOrFail($id);
-        return view('question',compact('question'));
+        return view('question',compact('id'));
     }
 
+    public function update(QuestionRequest $request, $id)
+    {
+        $question = $this->question->findOrFail($id);
+        $bool = $question->update($request->all()); //true和false
+        //中间表更新
+        $question->topics()->sync($request->topic_ids);
+
+        return (int) $bool;
+    }
+    public function apiQuestion()
+    {
+        $question_id = request('question_id');
+        $res = $this->question->find($question_id);
+        //中间表数据,给标签用
+        $res->topics = $res->topics;
+        $res->topic_ids = $res->topics->map(function ($topic){
+            return $topic->id;
+        });
+        return $res;
+    }
     /**
      *
      * @param $question_id
@@ -102,6 +118,21 @@ class QuestionController extends Controller
             //关注问题
             $this->attention->attention($user_id, $question_id, 1);
         }
+    }
+
+    public function isAuth()
+    {
+        $question = $this->question->find(request('question_id'));
+        $user_id = auth()->user()->id;
+        return (int) ($question->user_id == $user_id);
+    }
+
+    public function destroy($id)
+    {
+        $question = $this->question->findOrFail($id); //没找到抛出异常
+        $res = $question->delete();
+        //由于没有使用外键,所以要删除中间表的数据
+        return (int)$res; //bool  0 or 1
     }
     
 }

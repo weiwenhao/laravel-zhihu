@@ -8,11 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', '知乎') }}</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    {{--font-awesome--}}
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {{--style--}}
     <style>
         body{
@@ -69,7 +67,11 @@
                             </form>
                         </li>
                         <li>
-                            <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#tiwen">提问</button>
+                            <button type="button" class="btn btn-primary navbar-btn"
+                                    data-toggle="modal" data-target="#createQuestion"
+                            >
+                                提问
+                            </button>
                         </li>
                     </ul>
                     <!-- Right Side Of Navbar -->
@@ -82,8 +84,8 @@
                             <a class=""><i class="fa fa-comments"></i></a>
                         </li>
                         @if (Auth::guest())
-                            <li><a href="{{ url('/admin/login') }}">Login</a></li>
-                            <li><a href="{{ url('/admin/register') }}">Register</a></li>
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -116,7 +118,7 @@
         @yield('content')
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
-    @include('layouts.tiwen')
+    @include('question.createQuestion')
 @yield('js')
 </body>
 </html>

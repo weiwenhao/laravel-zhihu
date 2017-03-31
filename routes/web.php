@@ -48,9 +48,17 @@ Route::get('/', 'IndexController@index');
 //topic 的 select2数据源
 Route::get('/topic/select_res', 'TopicController@select_res');
 //存储问题
-Route::post('/question','QuestionController@store');
-//展示问题
-Route::get('/question/{id}','QuestionController@show');
+Route::post('/question', 'QuestionController@store');
+//修改问题
+Route::put('/question/{id}', 'QuestionController@update');
+//删除问题
+Route::delete('/question/{id}', 'QuestionController@destroy');
+//用户是否可以修改该问题
+Route::get('/question/is_auth', 'QuestionController@isAuth');
+//展示问题试图
+Route::get('/question/{id}', 'QuestionController@show');
+//获得问题数据
+Route::get('/api_question', 'QuestionController@apiQuestion');
 //用户是否关注了该问题
 Route::get('/question/{id}/is_attention', 'QuestionController@isAttention');
 //用户关注或者取消关注问题

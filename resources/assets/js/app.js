@@ -13,6 +13,9 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+require('sweetalert');
+
+require('select2')
 
 /*const app = new Vue({
     el: '#app',

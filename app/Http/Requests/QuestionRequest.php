@@ -28,12 +28,11 @@ class QuestionRequest extends FormRequest
             'title' => ['required', 'max:20', 'unique:questions,title', 'regex:/？|\?$/', ],
             'topic_ids' => 'required',
         ];
-        /*if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
+        if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
             $id = Request::get('id');
-            $rules['id'] = 'required';
-            $rules['title'] = 'required|alpha|unique:roles,name,'.$id;
-            $rules['display_name'] = 'required|unique:roles,display_name,'.$id;
-        }*/
+            $rules['title'] = ['required', 'max:20', 'unique:questions,title,'.$id, 'regex:/？|\?$/', ];
+            $rules['topic_ids'] = 'required';
+        }
         return $rules;
     }
 
