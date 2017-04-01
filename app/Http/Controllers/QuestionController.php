@@ -67,6 +67,8 @@ class QuestionController extends Controller
 
     public function update(QuestionRequest $request, $id)
     {
+        if(!$this->isAuth($id))
+            return 0;
         $question = $this->question->findOrFail($id);
         $bool = $question->update($request->all()); //true和false
         //中间表更新
@@ -120,18 +122,24 @@ class QuestionController extends Controller
         }
     }
 
-    public function isAuth()
+    public function isAuth($id = '')
     {
-        $question = $this->question->find(request('question_id'));
+        if(request('question_id')){
+            $id = request('question_id');
+        }
+        $question = $this->question->find($id);
         $user_id = auth()->user()->id;
         return (int) ($question->user_id == $user_id);
     }
 
     public function destroy($id)
     {
+        if(!$this->isAuth($id))
+            return 0;
         $question = $this->question->findOrFail($id); //没找到抛出异常
-        $res = $question->delete();
         //由于没有使用外键,所以要删除中间表的数据
+        $question->topics()->sync([]);
+        $res = $question->delete();
         return (int)$res; //bool  0 or 1
     }
     

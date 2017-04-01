@@ -63,3 +63,5 @@ Route::get('/api_question', 'QuestionController@apiQuestion');
 Route::get('/question/{id}/is_attention', 'QuestionController@isAttention');
 //用户关注或者取消关注问题
 Route::post('/question/attention', 'QuestionController@attention');
+
+Route::resource('/answer','AnswerController');
