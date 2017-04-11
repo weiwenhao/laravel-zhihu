@@ -168,6 +168,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
 
+
         /*
          * Application Service Providers...
          */
@@ -176,7 +177,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
         //ide-helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         //browser-debug
@@ -191,6 +191,11 @@ return [
         HieuLe\Active\ActiveServiceProvider::class,
         //百度富文本编辑器
         Overtrue\LaravelUEditor\UEditorServiceProvider::class,
+
+        //api
+        Dingo\Api\Provider\LaravelServiceProvider::class,
+        //jwt-auth
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
@@ -243,6 +248,8 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Active' => HieuLe\Active\Facades\Active::class,
+        'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => \Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];

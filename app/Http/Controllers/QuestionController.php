@@ -6,6 +6,7 @@ use App\Http\Requests\QuestionRequest;
 use App\Models\Attention;
 use App\Models\Question;
 use App\Models\Topic;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class QuestionController extends Controller
 {
@@ -31,7 +32,7 @@ class QuestionController extends Controller
     public function __construct(Question $question, Attention $attention, Topic $topic)
     {
 //        $this->middleware('auth',['except'=>'isAttention']);
-        $this->middleware('auth');
+//        $this->middleware('auth');
         $this->question = $question;
         $this->attention = $attention;
         $this->topic = $topic;
@@ -94,6 +95,10 @@ class QuestionController extends Controller
      */
     public function isAttention($question_id)
     {
+
+        //获取当前用户
+        dd(JWTAuth::parseToken()->authenticate()->id);
+
         $user_id = auth()->user()->id;
         $count = $this->attention->where([
             ['user_id', $user_id],

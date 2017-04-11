@@ -81,9 +81,9 @@
             <div class="container">
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-5">
-                        <template v-for="topic in question.topics">
-                            <div class="Tag" v-on:onclik='showTopic(topic.id)'>
-                                <a :href="topicUrl(topic.id)">@{{ topic.name }}</a>
+                        <template v-for="topic of question.topics">
+                            <div class="Tag">
+                                <a>@{{ topic.name }}</a>
                             </div> &nbsp;
                         </template>
                     </div>
@@ -293,7 +293,7 @@
         created(){
             this.question_id = $('[name=id]').val();
             this.getAttentionStatus();
-            this.getQuestions();
+            this.getQuestion();
             this.isEdit();
             this.randerAnswerUE();
             this.getAnswers();
@@ -432,7 +432,7 @@
                 .then(response=> {
                     if (response.data){
                         //刷新界面
-                        this.getQuestions();
+                        this.getQuestion();
                         //隐藏modal
                         $('#editQuestion').modal('hide');
 
@@ -446,7 +446,7 @@
                     }
                 })
                 .catch(error=> {
-                    if(error.response.data){
+                    if(error.response.data.title){
                         this.title_error = error.response.data.title[0];
                     }
                     if (error.response.data.topic_ids){
@@ -455,14 +455,17 @@
 
                 });
             },
-            getQuestions(){
-                axios.get('/api_question', {
+            getQuestion(){
+                axios.get('/api/question/'+this.question_id, {
                     params: {
-                        question_id: this.question_id,
+//                        question_id: this.question_id,
+                        include : 'topics'
                     }
                 })
                     .then(response=> {
-                        this.question = response.data;
+                         console.log(response);
+                         this.question = response.data.data;
+                         this.question.topics = response.data.data.topics.data
                     })
                     .catch(error=> {
                         swal({
@@ -573,12 +576,6 @@
               .catch(error=> {
               	console.log(error);
               });
-            },
-            /**
-             * 话题跳转链接
-             * */
-            topicUrl(id){
-                return '/topic/'+id;
             },
             /*
             * 判断用户是否关注了问题

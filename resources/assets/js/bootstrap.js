@@ -29,7 +29,8 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Authorization' : 'Bearer '+localStorage.getItem('jwt_token') //加入jwt_token
 };
 
 /**

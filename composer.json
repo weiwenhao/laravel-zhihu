@@ -8,11 +8,13 @@
         "php": ">=5.6.4",
         "barryvdh/laravel-debugbar": "^2.3",
         "barryvdh/laravel-ide-helper": "^2.3",
+        "dingo/api": "1.0.x@dev",
         "hieu-le/active": "^3.4",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "overtrue/laravel-ueditor": "~1.0",
         "predis/predis": "^1.1",
+        "tymon/jwt-auth": "1.0.0-beta.3",
         "yajra/laravel-datatables-oracle": "^7.3",
         "zizaco/entrust": "dev-2.0-dev"
     },
