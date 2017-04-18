@@ -25,7 +25,7 @@ class User extends Authenticatable implements  AuthenticatableUserContract
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','phone_number'
     ];
 
     /**

@@ -53,7 +53,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<!-- Scripts -->
+<!-- Ueditor Scripts -->
 @include('vendor.ueditor.assets')
 <script>
     /**
@@ -114,20 +114,20 @@
                     content : content,
                     is_show_user : is_show_user
                 })
-                    .then(response=> {
-                        if (response.data.id){
-                            window.location.href = '/question/'+response.data.id
-                        }
-                    })
-                    .catch(error=> {
-                        if(error.response.data.title){
-                            this.title_error = error.response.data.title[0];
-                        }
-                        if (error.response.data.topic_ids){
-                            this.topic_ids_error = error.response.data.topic_ids[0];
-                        }
+                .then(response=> {
+                    if (response.data.id){
+                        window.location.href = '/question/'+response.data.id
+                    }
+                })
+                .catch(error=> {
+                    if(error.response.data.title){
+                        this.title_error = error.response.data.title[0];
+                    }
+                    if (error.response.data.topic_ids){
+                        this.topic_ids_error = error.response.data.topic_ids[0];
+                    }
 
-                    });
+                });
             },
             clearError(){
                 this.title_error = null;

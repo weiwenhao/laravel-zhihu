@@ -95,11 +95,11 @@ class QuestionController extends Controller
      */
     public function isAttention($question_id)
     {
-
         //获取当前用户
-        dd(JWTAuth::parseToken()->authenticate()->id);
-
-        $user_id = auth()->user()->id;
+        if(!\Auth::check()){
+            return 0;
+        }
+        $user_id = \Auth::user()->id;
         $count = $this->attention->where([
             ['user_id', $user_id],
             ['attention_id', $question_id],
@@ -145,7 +145,7 @@ class QuestionController extends Controller
         //由于没有使用外键,所以要删除中间表的数据
         $question->topics()->sync([]);
         $res = $question->delete();
-        return (int)$res; //bool  0 or 1
+        return (int) $res; //bool  0 or 1
     }
     
 }

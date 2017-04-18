@@ -3,42 +3,46 @@
 namespace App\Http\ApiController;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends BaseController
 {
 
-    /**
-     * 验证登陆
-     */
+    use AuthenticatesUsers;
+
+
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * Get the login username to be used by the controller.
+     *
+     * @return string
      */
-    public function authenticate(Request $request)
+    public function username()
     {
-//        $this->validateLogin($request);
-        //对用户的输入进行表单的验证
-        // grab credentials from the request
-        $credentials = $request->only('phone_number', 'password');
-        dd(\Auth::guard()->attempt($credentials));
-        /*try {
-            // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
-            }
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }*/
-
-        //走到这里已经登陆成功了,是否需要给用户存储一次session?既传统的web登陆?
-        // all good so return the token
-        return response()->json(compact('token'));
+        return 'phone_number';
     }
+
+    protected function guard()
+    {
+        return auth()->guard('api');
+    }
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+        $credentials = $request->only('phone_number','password');
+        if ($token = $this->guard()->attempt($credentials)) { //根据用户名和密码创建token,这里默认使用的guard是 api
+            $this->clearLoginAttempts($request);
+            return response()->json([
+                'token' => $token,
+            ]);
+        }
+        return response()->json([ //从哪里去除了错误??
+            'message' => \Lang::get('auth.failed'),
+        ], 401);
+    }
+
     protected function validateLogin(Request $request)
     {
         $rules = [
@@ -50,5 +54,10 @@ class AuthController extends BaseController
         if ($validator->fails()) {
             throw new StoreResourceFailedException('验证失败',$validator->errors()); //422
         }
+    }
+
+    public function isAuth()
+    {
+        return response()->json(\Auth::check());
     }
 }

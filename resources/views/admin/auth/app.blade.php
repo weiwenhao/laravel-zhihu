@@ -20,7 +20,7 @@
         ]) !!};
     </script>
 </head>
-<body>
+<body style="margin-top: 0px">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">

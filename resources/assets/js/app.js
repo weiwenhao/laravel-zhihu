@@ -19,6 +19,8 @@ require('sweetalert');
 
 require('select2')
 
-/*const app = new Vue({
-    el: '#app',
-});*/
+// Vue.component('question-modal', require('./components/QuestionModal.vue'));
+Vue.component('example', require('./components/Example.vue'));
+Vue.component('MyNav', require('./components/MyNav.vue')); //导航条
+Vue.component('Question', require('./components/Question.vue'));    //问题头
+Vue.component('Answers', require('./components/Question/Answers.vue'));    //答案区

@@ -1,23 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\ApiController;
 
-use App\Models\Answer;
-use Illuminate\Http\Request;
+use App\Models\Topic;
 
-class AnswerController extends Controller
+class TopicController extends BaseController
 {
-    protected $answer;
+    protected $topic;
 
     /**
-     * AnswerController constructor.
-     * @param $answer
+     * TopicController constructor.
+     * @param $topic
      */
-    public function __construct(Answer $answer)
+    public function __construct(Topic $topic)
     {
-        $this->answer = $answer;
+        $this->topic = $topic;
     }
 
+
+    public function selectData()
+    {
+        $name = \Request::get('name');
+        $res = Topic::where('name','like',"%$name%")->limit(10)->select('id','name as text')->get();
+        return response()->json($res);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,11 +31,17 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        $question_id = request('question_id');
-        $page_size = request('page_size');
-        $order = request('order');
-        $res = $this->answer->getAnswerApi($question_id, $page_size, $order);
-        return $res;
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -40,15 +52,7 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'content' => 'required',
-        ]);
-        $answer = $this->answer->create([
-            'content' => $request->get('content'),
-            'question_id' => $request->get('question_id', 8),
-            'user_id' => \Auth::user()->id
-        ]);
-        return $answer;
+        //
     }
 
     /**
@@ -59,13 +63,12 @@ class AnswerController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  z$id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)

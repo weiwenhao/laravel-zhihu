@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         //RABC
-       /* $this->call(PermissionsTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(AdminsTableSeeder::class);*/
+        $this->call(AdminsTableSeeder::class);
 
        $this->call(UserTableSeeder::class);
        $this->call(TopicsTableSeeder::class);

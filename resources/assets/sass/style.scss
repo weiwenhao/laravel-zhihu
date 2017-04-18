@@ -1,0 +1,47 @@
+body {
+    margin-top: 65px;
+}
+
+//图片自适应
+img {
+    width: 100%
+}
+
+//去除a标签的颜色
+a {
+    color: inherit;
+}
+
+/*蓝色背景的按钮,用于点赞*/
+.blue-button {
+    height: 34px;
+    padding: 0 10px;
+    line-height: 32px;
+    color: #2d84cc;
+    text-align: center;
+    cursor: pointer;
+    background: #ebf3fb;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: inherit;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+// 不带背景的button
+.default-button {
+    height: auto;
+    padding: 0;
+    line-height: inherit;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font: inherit;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    color: #8590a6;
+    text-align: center;
+    cursor: pointer;
+}

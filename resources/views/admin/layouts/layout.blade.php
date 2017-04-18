@@ -8,11 +8,11 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    {{--<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">--}}
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">--}}
+
+    <link rel="stylesheet" href="{{ mix('/css/admin.css') }}">
     {{--继承css--}}
     @yield('css')
     <!-- Theme style -->
@@ -29,7 +29,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
-<div class="wrapper">
+<div class="wrapper" id="app">
 
     <header class="main-header">
         <!-- Logo -->
@@ -231,7 +231,7 @@
 <script src="/back/js/app.min.js"></script>
 <script src="/back/js/demo.js"></script>
 {{--webpack打包js--}}
-<script src="/js/admin.js"></script>
+<script src="{{ mix('/js/admin.js') }}"></script>
 <script>
     /**
      * 菜单高亮

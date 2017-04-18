@@ -51,4 +51,17 @@ class Answer extends Model
         }
         return $data->diffForHumans();
     }
+
+
+    /**
+     *todo think 必须是已经存在数据的模型才能调用该方法?  Answer::这样调用是禁止的!!! Answer是一个什么?集合?还是单个模型?
+     */
+    public function isAuthor()
+    {
+        if( !\Auth::check()){
+            return false;
+        }
+
+        return $this->user_id == \Auth::user()->id;
+    }
 }

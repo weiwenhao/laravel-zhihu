@@ -30,22 +30,10 @@
 @endsection
 @section('js')
 <script>
-    new Vue({
-        el : '#app',
-        created(){
+    const app = new Vue({
+        el: '#app',
+        methods : {
 
-//            localStorage.removeItem('jwt_token')
-            //请求测试
-            axios.get('/api/question/3', {
-
-            })
-            .then(response=> {
-                console.log(response);
-
-            })
-            .catch(error=> {
-                console.log(error.response);
-            });
         }
     });
 </script>

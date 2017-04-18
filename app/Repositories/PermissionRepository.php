@@ -72,6 +72,13 @@ class PermissionRepository extends Repository
         });
         return $res;
     }
+
+    /**
+     * 根据sort排序并得到嵌套的权限数组
+     * @param $perm_list
+     * @param int $parent_id
+     * @return array
+     */
     public function sortNestPermList($perm_list, $parent_id=0)
     {
         $newArray = [];

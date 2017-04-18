@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Dingo\Api\Http\FormRequest;
 use Illuminate\Support\Facades\Request;
 
-class QuestionRequest extends FormRequest
+class AnswerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,11 @@ class QuestionRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'title' => ['required', 'max:20', 'unique:questions,title', 'regex:/？|\?$/', ],
-            'topic_ids' => 'required',
+            'content' => 'required',
         ];
-        if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
+        /*if (Request::isMethod('PATCH') || Request::isMethod('PUT')){
             $id = Request::get('id');
-            $rules['title'] = ['required', 'max:20', 'unique:questions,title,'.$id, 'regex:/？|\?$/', ];
-            $rules['topic_ids'] = 'required';
-        }
+        }*/
         return $rules;
     }
 
