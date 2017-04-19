@@ -113,15 +113,32 @@
 //            console.log($(this.answer.content).outerHeight());
 //             console.log($('.answer-'+this.answer.id).outerHeight());
             //通过高度计算是否需要隐藏文本内容
-            this.computeHeight();
+            this.$nextTick(function () {
+                this.computeHeight();
+            });
         },
         methods : {
             computeHeight(){
-                //通过高度计算是否需要隐藏文本内容
+                let defereds = [];
+                $('.answer-'+this.answer.id).find('img').each(function() { //每加载完一张图片 resolve()，when() 当所有的 Deferred 完成便执行 done()。
+                    var dfd = $.Deferred();
+                    $(this).bind('load',function(){
+                        dfd.resolve();
+                    })
+                    defereds.push(dfd);
+                });
+                $.when.apply(null, defereds).done(() => {//注： 因为 $.when 支持的参数是 $.when(dfd1, dfd2, dfd3, ...)，所以我们这里使用了 apply 来接受数组参
+                    //通过高度计算是否需要隐藏文本内容
+                    if($('.answer-'+this.answer.id).outerHeight()*1 > 100){ //
+                        this.is_show_hide_button = true; //显示按钮
+                        this.is_hide_content = true; //隐藏内容
+                    }
+                });
+                /*//通过高度计算是否需要隐藏文本内容
                 if($('.answer-'+this.answer.id).outerHeight()*1 > 200){ //
                     this.is_show_hide_button = true; //显示按钮
                     this.is_hide_content = true; //隐藏内容
-                }
+                }*/
             },
             delAnswer(){ //该接口对父组件的影响较多,因此使用时间转发传递到外面?
                 swal({

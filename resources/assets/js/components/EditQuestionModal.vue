@@ -30,7 +30,7 @@
                             <label>问题描述（可选）：</label>
                             <div>
                                 <!-- 编辑器容器 -->
-                                <script id="editContent" name="editContent" type="text/plain"></script>
+                                <div id="editContent" name="editContent"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -187,8 +187,9 @@
                     autotypeset:{ indent: true,imageBlockLine: 'center' },
                     initialFrameHeight: 140,
                     zIndex: 3000
+
                 });
-                this.ue.ready(closure =>{
+                this.ue.ready( ()=>{
                     this.ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
                     if(this.question.content){
                         this.ue.setContent(this.question.content);

@@ -121,11 +121,31 @@
         },
         methods : {
             computeHeight(){
-                //通过高度计算是否需要隐藏文本内容
-                if($('.question-content').outerHeight()*1 > 100){ //
-                    this.is_show_hide_button = true; //显示按钮
-                    this.is_hide_content = true; //隐藏内容
-                }
+                let defereds = [];
+                $('.question-content img').each(function() { //每加载完一张图片 resolve()，when() 当所有的 Deferred 完成便执行 done()。
+                    var dfd = $.Deferred();
+                    $(this).bind('load',function(){
+                        dfd.resolve();
+                    })
+                    defereds.push(dfd);
+                });
+                $.when.apply(null, defereds).done(()  => {//注： 因为 $.when 支持的参数是 $.when(dfd1, dfd2, dfd3, ...)，所以我们这里使用了 apply 来接受数组参
+                    //通过高度计算是否需要隐藏文本内容
+                    if($('.question-content').outerHeight()*1 > 100){ //
+                        this.is_show_hide_button = true; //显示按钮
+                        this.is_hide_content = true; //隐藏内容
+                    }
+                });
+               /* $('.question-content img').each(function(){
+                    $(this).bind('load',function(){
+                        console.log($('.question-content').outerHeight());
+                    }).bind('error',function(){
+                        //图片加载错误，加入错误处理
+                        //  dfd.resolve();
+                    })
+                });*/
+                //等带图片加载完毕
+
             },
             getQuestion(){
                 //无需验证登陆
