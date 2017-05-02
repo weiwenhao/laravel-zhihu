@@ -19,6 +19,11 @@ class Answer extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function getAnswerApi($question_id, $page_size, $order)
     {
         //排序处理
@@ -50,6 +55,11 @@ class Answer extends Model
             return $data->toDateString();
         }
         return $data->diffForHumans();
+    }
+
+    public function commentsCount()
+    {
+        return $this->comments->count();
     }
 
 

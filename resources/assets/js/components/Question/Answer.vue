@@ -37,49 +37,49 @@
                 <a href="">发布于 {{ answer.created_at }}</a>
             </div>
             <div class="row">
-            <span>
-                <button class="blue-button">
-                     <i class="fa fa-caret-up"></i>
-                    &nbsp;
-                    <span>{{ answer.likes_count }}</span>
-                </button>
-                <button class="blue-button">
-                     <i class="fa fa-caret-down"></i>
-                </button>
-            </span>
+                <span>
+                    <button class="blue-button">
+                         <i class="fa fa-caret-up"></i>
+                        &nbsp;
+                        <span>{{ answer.likes_count }}</span>
+                    </button>
+                    <button class="blue-button">
+                         <i class="fa fa-caret-down"></i>
+                    </button>
+                </span>
                 <span style="margin-left: 24px">
-                <button class="default-button">
-                    <i class="fa fa-comment"></i>
-                    {{ answer.comments_count }}条评论
-                </button>
-                <button class="default-button">
-                    <i class="fa fa-paper-plane"></i>
-                    分享
-                </button>
-                <button class="default-button">
-                    <i class="fa fa-bookmark"></i>
-                    收藏
-                </button>
-
-
-                <template v-if="answer.is_author">
-                    <button class="default-button" @click="editAnswer()">
-                        <i class="fa fa-pencil"></i>
-                        修改
+                    <button class="default-button"
+                        @click="showCommentModal(answer.id)"
+                    >
+                        <i class="fa fa-comment"></i>
+                        {{ answer.comments_count }}条评论
                     </button>
-                    <button class="default-button" @click="delAnswer()">
-                        <i class="fa fa-trash"></i>
-                        删除
+                    <button class="default-button">
+                        <i class="fa fa-paper-plane"></i>
+                        分享
                     </button>
-                </template>
+                    <button class="default-button">
+                        <i class="fa fa-bookmark"></i>
+                        收藏
+                    </button>
+                    <template v-if="answer.is_author">
+                        <button class="default-button" @click="editAnswer()">
+                            <i class="fa fa-pencil"></i>
+                            修改
+                        </button>
+                        <button class="default-button" @click="delAnswer()">
+                            <i class="fa fa-trash"></i>
+                            删除
+                        </button>
+                    </template>
 
-                <button class="default-button pull-right"
-                        v-if="is_show_hide_button"
-                        v-html="show_hide_msg"
-                        @click="switchShowOrHide()"
-                >
-                </button>
-            </span>
+                    <button class="default-button pull-right"
+                            v-if="is_show_hide_button"
+                            v-html="show_hide_msg"
+                            @click="switchShowOrHide()"
+                    >
+                    </button>
+                </span>
             </div>
         </template>
         <hr>
@@ -129,7 +129,7 @@
                 });
                 $.when.apply(null, defereds).done(() => {//注： 因为 $.when 支持的参数是 $.when(dfd1, dfd2, dfd3, ...)，所以我们这里使用了 apply 来接受数组参
                     //通过高度计算是否需要隐藏文本内容
-                    if($('.answer-'+this.answer.id).outerHeight()*1 > 100){ //
+                    if($('.answer-'+this.answer.id).outerHeight()*1 > 250){ //
                         this.is_show_hide_button = true; //显示按钮
                         this.is_hide_content = true; //隐藏内容
                     }
@@ -249,6 +249,13 @@
             },
             switchShowOrHide(){
                 this.is_hide_content = !this.is_hide_content;
+            },
+
+            /******************调用外部接口******************/
+            showCommentModal(answer_id){
+                //使用事件转发触发父组件中的时间
+                this.$emit('showCommentModal', answer_id);
+
             }
         }
     }

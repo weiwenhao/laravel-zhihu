@@ -16,6 +16,7 @@
                     <answer :answer="answer" :question_id="question_id"
                             @refreshAnswers="getAnswers()"
                             @editIsDeleted="editIsDeleted()"
+                            @showCommentModal="showCommentModal"
                     ></answer>
                 </template>
             </div>
@@ -66,16 +67,22 @@
                 >提交回答</button>
             </div>
         </div>
+        <!--commentsModal-->
+        <comment-modal
+            ref="commentModal"
+        ></comment-modal>
     </div>
 </template>
 <script>
     import Answer from './Answer.vue';
+    import CommentModal from '../Comment/CommentModal.vue';
     /*组件选项定义,包括data,methods,等*/
     export default {
         name: 'Answers',
         props : ['question_id'],
         components :{
-            Answer
+            Answer,
+            CommentModal
         },
         data () {
             return {
@@ -233,9 +240,14 @@
             },
 
 
-            //给子组建调用的接口数据
+            /***************给子组建调用的接口数据*****************/
+            //修改is_deleted中的数据为true,快速响应
             editIsDeleted(){
                 this.user_info.is_deleted = true;
+            },
+            //调用commentModal框
+            showCommentModal(answer_id){
+                this.$refs.commentModal.showModal(answer_id); //调用评论模态组件的显示命令
             }
         }
     }

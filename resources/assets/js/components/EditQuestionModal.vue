@@ -66,25 +66,12 @@
         },
         methods : {
             showModal(){
-                //判断用户是否登陆 return bool
-                axios.get('/api/is_auth')
-                .then(response=> {
-                    //状态码200表示登陆成功->直接进行业务逻辑
-                    if(response.data.is_auth){
-                        //设置
-                        $('#editQuestion').modal({backdrop: 'static', keyboard: false});
-                        //打开modal
-                        $('#editQuestion').modal('show');
-                        //渲染数据
-                        this.renderData();
-                    }
-                })
-                .catch(error=> {
-                    if(error.response.status == 401){ //401 Unauthori...
-                        //todo 弹出登陆框
-                        alert('请先登陆!')
-                    }
-                });
+                    //设置
+                    $('#editQuestion').modal({backdrop: 'static', keyboard: false});
+                    //打开modal
+                    $('#editQuestion').modal('show');
+                    //渲染数据
+                    this.renderData();
             },
             hideModal(){
                 $('#editQuestion').modal('hide');

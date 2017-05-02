@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\AdminComposer;
 use App\Models\User;
 use App\Repositories\PermissionRepository;
 use Illuminate\Support\ServiceProvider;
@@ -11,16 +12,12 @@ class ComposerServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param PermissionRepository $permission
      * @return void
      */
-    public function boot(PermissionRepository $permission)
+    public function boot()
     {
-        $menus = $permission->getNestPermList();
         //绑定菜单数据到后台
-        \View::composer('admin.*', function ($view) use ($menus){
-            $view->with(compact('menus'));
-        });
+        \View::composer('admin.*', AdminComposer::class);
     }
 
     /**

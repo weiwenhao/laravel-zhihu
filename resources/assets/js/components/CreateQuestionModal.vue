@@ -71,25 +71,12 @@
         },
         methods : {
             showModal(){
-                //判断用户是否登陆 return bool
-                axios.get('/api/is_auth')
-                .then(response=> {
-                	//状态码200表示登陆成功->直接进行业务逻辑
-                    if(response.data.is_auth){
-                        //打开modal
-                        $('#createQuestion').modal('show');
-                        //数据接受完毕后进行 select2的渲染
-                        this.renderSelect2();
-                        //ueditor渲染
-                        this.renderUeditor();
-                    }
-                })
-                .catch(error=> {
-                	if(error.response.status == 401){ //401 Unauthori...
-                	    //todo 弹出登陆框
-                        alert('请先登陆!')
-                    }
-                });
+                //打开modal
+                $('#createQuestion').modal('show');
+                //数据接受完毕后进行 select2的渲染
+                this.renderSelect2();
+                //ueditor渲染
+                this.renderUeditor();
             },
             renderSelect2(){
                 //todo: 待添加ajax头 ,暂时先不添加验证

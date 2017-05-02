@@ -2,22 +2,23 @@
 
 namespace App\Transformers;
 
-use App\Models\Answer;
+use App\Models\Comment;
 use League\Fractal\TransformerAbstract;
 
-class AnswerTransformer extends TransformerAbstract {
+class CommentTransformer extends TransformerAbstract {
     protected $availableIncludes = [];
     protected $defaultIncludes = ['user']; //user,和 单个answer同级
-    public function transform(Answer $model)
+    public function transform(Comment $model)
     {
         return [
             'id' => $model->id,
             'content' => $model->content,
             'likes_count' => (int)$model->likes_count,
-            'comments_count' => (int)$model->commentsCount(),
-            'is_comment' => (bool) $model->is_comment,
+            'created_at' => $model->created_at->diffForHumans(),
+            'obj_comment_id' => $model->obj_comment_id,
             'is_author' => $model->isAuthor(),
-            'created_at' => $model->renderDate($model->created_at),
+            'obj_username' => $model->getObjUserName($model->obj_comment_id),
+            'is_answer_author' => $model->isAnswerAuthor($model->answer_id),
         ];
     }
 
