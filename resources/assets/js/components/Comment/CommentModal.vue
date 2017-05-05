@@ -18,9 +18,9 @@
                                 <a class="pull-left" href="#"><img src="http://iph.href.lu/100x100" alt=""></a>
                                 <div class="media-body">
                                 <span class="media-heading">
-                                    {{ comment.user.data.username }} <span v-if="comment.is_answer_author">（作者）</span>
-                                    <template v-if="comment.obj_comment_id">
-                                        <span class="comment-reply">回复</span>{{ comment.obj_username }}
+                                    {{ comment.user.data.username }} <span v-if="comment.comment_user.is_answer_author">（作者）</span>
+                                    <template v-if="comment.obj.username">
+                                        <span class="comment-reply">回复</span>{{ comment.obj.username }} <span v-if="comment.obj.is_answer_author">（作者）</span>
                                     </template>
                                 </span>
 
@@ -32,21 +32,50 @@
                             <div class="row">
                                 {{ comment.content }}
                             </div>
-                            <div class="row">
+                            <div class="row" v-if="!comment.start_reply">
                                 <span>
                                     <button class="default-button">
                                         <i class="fa fa-thumbs-up"></i>
                                         {{ comment.likes_count }}
                                     </button>
-                                    <button class="default-button">
+                                    <button class="default-button"
+                                        @click="comment.start_reply = !comment.start_reply"
+                                    >
                                         <i class="fa fa-reply"></i>
                                         回复
                                     </button>
+                                    <button class="default-button"
+                                            v-if="comment.is_author || comment.is_answer_author"
+                                            @click="delComment(comment.id)"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                        删除
+                                    </button>
                                 </span>
                             </div>
+                            <div class="row" v-else>
+                                <div>
+                                    <textarea rows="1" class="form-control" :placeholder="'回复'+ comment.user.data.username"
+                                              v-model="comment.reply_content"
+                                    ></textarea>
+                                </div>
+                                <div style="margin-top:15px">
+                                    <div class=" pull-right">
+                                        <a href="" @click.prevent="comment.start_reply = !comment.start_reply"  style="margin-right: 15px">取消</a>
+                                        <button class="btn btn-primary"
+                                                :class="{ disabled:!comment.reply_content }"
+                                                @click="createComment(comment.reply_content, comment.id, comment.user.data.username)"
+                                        >评论</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <hr>
                         </div>
                         <!--分页区域-->
+                    </div>
+                    <div v-if="!pagination.total">
+                        <b>暂时还有评论,快来占个沙发吧!</b>
                     </div>
                     <!--每页记录数大于总记录数时才需要显示分页-->
                     <div class="comment-footer text-center"
@@ -89,7 +118,7 @@
                    </div>
                     <div class="col-md-2">
                         <button class="btn btn-primary btn-block" :class="{ disabled:!content }"
-                            @click="createComment()"
+                            @click="createComment(content)"
                         >提交</button>
                     </div>
                 </div>
@@ -125,7 +154,43 @@
                 $('#comments').modal('show');
                 this.getComments();
             },
+            delComment(comment_id){
+                swal({
+                        title: "你确定要删除这条评论吗？",
+                            /* type: "info",*/
+                        showCancelButton: true,
+                        confirmButtonColor: "#3097D1",
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        closeOnConfirm: true,
+                    },
+                    () => {
+                        axios.delete('/api/answers/'+this.answer_id+'/comments/'+comment_id)
+                            .then(response => {
+                                if(response.status == 204){
+                                    swal({
+                                        title: "评论已删除",
+                                        timer: 800,
+                               /*         type: "success",*/
+                                        showConfirmButton: false
+                                    });
+                                    this.getComments(sessionStorage.getItem('comment_url'));
+                                }
+                            })
+                            .catch((error)=> {
+
+                                if(error.response.status == 404) {
+                                    alert(error.response.data.message)
+                                }
+                                if(error.response.status == 403) {
+                                    alert(error.response.data.message)
+                                }
+                            });
+                    });
+            },
             getComments(url = '/api/answers/'+this.answer_id+'/comments'){
+                //url存一下缓存
+                sessionStorage.setItem('comment_url', url);
                  axios.get(url, {
                  })
                  .then((response)=> {
@@ -141,11 +206,12 @@
                  	console.log(error);
                  });
             },
-            createComment(obj_comment_id = null){
-                if(this.content && this.is_auth){
+            createComment(content, obj_comment_id = null, obj_username = null){
+                if(content && this.is_auth){
                      axios.post('/api/answers/'+this.answer_id+'/comments', {
-                      	'content' : this.content,
-                         'obj_comment_id' :  obj_comment_id
+                      	'content' : content,
+                         'obj_comment_id' :  obj_comment_id,
+                         'obj_username' : obj_username
                      })
                      .then((response)=> {
                          if(response.status == 200 && response.data.comment.id){

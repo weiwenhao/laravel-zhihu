@@ -1,19 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
+Route::get('/test',function (){
 
+});
 
-Auth::routes();
 
 Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     //登录
@@ -42,6 +33,11 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'middleware'=>['auth.ad
     Route::get('/admin/dt_admins','AdminController@DtAdmins')->name('admin.index');;
     Route::resource('admin','AdminController');
 });
+
+//登陆表单
+Route::get('/login', 'AuthController@showLoginForm');
+//注册注册
+Route::get('/register', 'AuthController@showRegisterForm');
 
 //前台主页
 Route::get('/', 'IndexController@index');

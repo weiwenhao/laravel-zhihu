@@ -1,76 +1,137 @@
 @extends('layouts.app')
+@section('css')
+    <style>
+        body{
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .canvas {
+            position: absolute;
+            top:30%;
+            left:50%;
+            margin-top:-100px;
+            margin-left:-175px;
+        }
+    </style>
+@stop
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">用户名</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
-                            <label for="phone_number" class="col-md-4 control-label">手机号码</label>
-
-                            <div class="col-md-6">
-                                <input id="phone_number" type="text" class="form-control" name="phone_number" value="{{ old('phone_number') }}" required>
-
-                                @if ($errors->has('phone_number'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('phone_number') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">密码</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">确认密码</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="container canvas">
+    <div style="width: 350px">
+        <register></register>
     </div>
 </div>
+<canvas id="Mycanvas">
+</canvas>
 @endsection
+@section('js')
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+            },
+        });
+    </script>
+    <script>
+        var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 35;
+
+        var canvas = document.getElementById('Mycanvas');
+        canvas.width = WIDTH,
+            canvas.height = HEIGHT;
+        var context = canvas.getContext('2d');
+        context.strokeStyle = 'rgba(0,0,0,0.02)',
+            context.strokeWidth = 1,
+            context.fillStyle = 'rgba(0,0,0,0.05)';
+        var circleArr = [];
+
+        function Line (x, y, _x, _y, o) {
+            this.beginX = x,
+                this.beginY = y,
+                this.closeX = _x,
+                this.closeY = _y,
+                this.o = o;
+        }
+        //�㣺Բ��xy���꣬�뾶��ÿ֡�ƶ�xy�ľ���
+        function Circle (x, y, r, moveX, moveY) {
+            this.x = x,
+                this.y = y,
+                this.r = r,
+                this.moveX = moveX,
+                this.moveY = moveY;
+        }
+        //����max��min֮��������
+        function num (max, _min) {
+            var min = arguments[1] || 0;
+            return Math.floor(Math.random()*(max-min+1)+min);
+        }
+        // ����ԭ��
+        function drawCricle (cxt, x, y, r, moveX, moveY) {
+            var circle = new Circle(x, y, r, moveX, moveY)
+            cxt.beginPath()
+            cxt.arc(circle.x, circle.y, circle.r, 0, 2*Math.PI)
+            cxt.closePath()
+            cxt.fill();
+            return circle;
+        }
+        //��������
+        function drawLine (cxt, x, y, _x, _y, o) {
+            var line = new Line(x, y, _x, _y, o)
+            cxt.beginPath()
+            cxt.strokeStyle = 'rgba(0,0,0,'+ o +')'
+            cxt.moveTo(line.beginX, line.beginY)
+            cxt.lineTo(line.closeX, line.closeY)
+            cxt.closePath()
+            cxt.stroke();
+
+        }
+        //��ʼ������ԭ��
+        function init () {
+            circleArr = [];
+            for (var i = 0; i < POINT; i++) {
+                circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10)/40, num(10, -10)/40));
+            }
+            draw();
+        }
+
+        //ÿ֡����
+        function draw () {
+            context.clearRect(0,0,canvas.width, canvas.height);
+            for (var i = 0; i < POINT; i++) {
+                drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+            }
+            for (var i = 0; i < POINT; i++) {
+                for (var j = 0; j < POINT; j++) {
+                    if (i + j < POINT) {
+                        var A = Math.abs(circleArr[i+j].x - circleArr[i].x),
+                            B = Math.abs(circleArr[i+j].y - circleArr[i].y);
+                        var lineLength = Math.sqrt(A*A + B*B);
+                        var C = 1/lineLength*7-0.009;
+                        var lineOpacity = C > 0.03 ? 0.03 : C;
+                        if (lineOpacity > 0) {
+                            drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i+j].x, circleArr[i+j].y, lineOpacity);
+                        }
+                    }
+                }
+            }
+        }
+
+        //����ִ��
+        window.onload = function () {
+            init();
+            setInterval(function () {
+                for (var i = 0; i < POINT; i++) {
+                    var cir = circleArr[i];
+                    cir.x += cir.moveX;
+                    cir.y += cir.moveY;
+                    if (cir.x > WIDTH) cir.x = 0;
+                    else if (cir.x < 0) cir.x = WIDTH;
+                    if (cir.y > HEIGHT) cir.y = 0;
+                    else if (cir.y < 0) cir.y = HEIGHT;
+
+                }
+                draw();
+            }, 16);
+        }
+    </script>
+@stop

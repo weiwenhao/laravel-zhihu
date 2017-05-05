@@ -1,124 +1,137 @@
 @extends('layouts.app')
+@section('css')
+    <style>
+        body{
+            text-align: center;
+            overflow: hidden;
+        }
 
+        .canvas {
+            position: absolute;
+            top:30%;
+            left:50%;
+            margin-top:-100px;
+            margin-left:-175px;
+        }
+
+    </style>
+@stop
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST">
-                        <div class="form-group"
-                            :class="{ 'has-error':this.validator_error.phone_number }"
-                        >
-                            <label for="phone_number" class="col-md-4 control-label">手机号码</label>
-
-                            <div class="col-md-6">
-                                <input v-model="phone_number" id="phone_number" type="text" class="form-control" name="phone_number" value="{{ old('phone_number') }}" required autofocus>
-                                <span class="help-block" v-if="this.validator_error.phone_number">
-                                    <strong>@{{ this.validator_error.phone_number }}</strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group"
-                             :class="{ 'has-error':this.validator_error.password }"
-                        >
-                            <label for="password" class="col-md-4 control-label">密码</label>
-
-                            <div class="col-md-6">
-                                <input v-model="password" id="password" type="password" class="form-control" name="password" required>
-                                <span class="help-block" v-if="this.validator_error.password">
-                                    <strong>@{{ this.validator_error.password }}</strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary"
-                                    @click.prevent="sendLoginForm()"
-                                >
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="container canvas" >
+    <div style="width: 350px">
+        <login></login>
     </div>
 </div>
+<canvas id="Mycanvas">
+</canvas>
 @endsection
 @section('js')
 <script>
     new Vue({
         el : '#app',
         data : {
-            phone_number : '',
-            password : '',
-            validator_error : {
-                phone_number : null,
-                password : null
-            },
         },
-        methods : {
-            sendLoginForm(){
-                //提交登陆表单
-                axios.post('/api/login', {
-                    //key : value
-                    phone_number : this.phone_number,
-                    password : this.password
-                })
-                .then(response => {
-                    if(response.data.token) {
-                        //清空错误
-                        this.validator_error.phone_number = '';
-                        this.validator_error.password = '';
-                        //存储token
-                        localStorage.setItem('jwt_token', response.data.token)
-                         //登陆成功,跳转界面
-                        //跳转到首页
-                        location.href='/';
-                    }
-                })
-                .catch(error => {
-                    //清空错误
-                    this.validator_error.phone_number = '';
-                    this.validator_error.password = '';
-                    //清空密码
-                    /*this.password = '';*/
+    });
+</script>
+<script>
+    var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 35;
 
-                    if(error.response.status == 422){
-                        if (error.response.data.errors.phone_number){
-                            this.validator_error.phone_number = error.response.data.errors.phone_number[0];
-                        }
-                        if(error.response.data.errors.password) {
-                            this.validator_error.password = error.response.data.errors.password[0];
-                        }
-                    }
+    var canvas = document.getElementById('Mycanvas');
+    canvas.width = WIDTH,
+        canvas.height = HEIGHT;
+    var context = canvas.getContext('2d');
+    context.strokeStyle = 'rgba(0,0,0,0.02)',
+        context.strokeWidth = 1,
+        context.fillStyle = 'rgba(0,0,0,0.05)';
+    var circleArr = [];
 
-                    if(error.response.status == 401) {
-                        this.password = '';
-                        this.validator_error.password = '密码错误';
+    function Line (x, y, _x, _y, o) {
+        this.beginX = x,
+            this.beginY = y,
+            this.closeX = _x,
+            this.closeY = _y,
+            this.o = o;
+    }
+    //�㣺Բ��xy���꣬�뾶��ÿ֡�ƶ�xy�ľ���
+    function Circle (x, y, r, moveX, moveY) {
+        this.x = x,
+            this.y = y,
+            this.r = r,
+            this.moveX = moveX,
+            this.moveY = moveY;
+    }
+    //����max��min֮��������
+    function num (max, _min) {
+        var min = arguments[1] || 0;
+        return Math.floor(Math.random()*(max-min+1)+min);
+    }
+    // ����ԭ��
+    function drawCricle (cxt, x, y, r, moveX, moveY) {
+        var circle = new Circle(x, y, r, moveX, moveY)
+        cxt.beginPath()
+        cxt.arc(circle.x, circle.y, circle.r, 0, 2*Math.PI)
+        cxt.closePath()
+        cxt.fill();
+        return circle;
+    }
+    //��������
+    function drawLine (cxt, x, y, _x, _y, o) {
+        var line = new Line(x, y, _x, _y, o)
+        cxt.beginPath()
+        cxt.strokeStyle = 'rgba(0,0,0,'+ o +')'
+        cxt.moveTo(line.beginX, line.beginY)
+        cxt.lineTo(line.closeX, line.closeY)
+        cxt.closePath()
+        cxt.stroke();
+
+    }
+    //��ʼ������ԭ��
+    function init () {
+        circleArr = [];
+        for (var i = 0; i < POINT; i++) {
+            circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10)/40, num(10, -10)/40));
+        }
+        draw();
+    }
+
+    //ÿ֡����
+    function draw () {
+        context.clearRect(0,0,canvas.width, canvas.height);
+        for (var i = 0; i < POINT; i++) {
+            drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+        }
+        for (var i = 0; i < POINT; i++) {
+            for (var j = 0; j < POINT; j++) {
+                if (i + j < POINT) {
+                    var A = Math.abs(circleArr[i+j].x - circleArr[i].x),
+                        B = Math.abs(circleArr[i+j].y - circleArr[i].y);
+                    var lineLength = Math.sqrt(A*A + B*B);
+                    var C = 1/lineLength*7-0.009;
+                    var lineOpacity = C > 0.03 ? 0.03 : C;
+                    if (lineOpacity > 0) {
+                        drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i+j].x, circleArr[i+j].y, lineOpacity);
                     }
-                });
+                }
             }
         }
-    });
-</script>    
+    }
+
+    //����ִ��
+    window.onload = function () {
+        init();
+        setInterval(function () {
+            for (var i = 0; i < POINT; i++) {
+                var cir = circleArr[i];
+                cir.x += cir.moveX;
+                cir.y += cir.moveY;
+                if (cir.x > WIDTH) cir.x = 0;
+                else if (cir.x < 0) cir.x = WIDTH;
+                if (cir.y > HEIGHT) cir.y = 0;
+                else if (cir.y < 0) cir.y = HEIGHT;
+
+            }
+            draw();
+        }, 16);
+    }
+</script>
 @stop

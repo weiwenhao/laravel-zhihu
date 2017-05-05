@@ -16,7 +16,7 @@ class User extends Authenticatable implements  AuthenticatableUserContract
      * @var array
      */
     protected $fillable = [
-        'username', 'phone_number', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable implements  AuthenticatableUserContract
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','phone_number'
+        'password', 'remember_token','email'
     ];
 
     /**

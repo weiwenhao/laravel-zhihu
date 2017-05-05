@@ -162,7 +162,6 @@
                             }
                         })
                         .catch((error)=> {
-
                             if(error.response.status == 404) {
                                 alert(error.response.data.message)
                             }

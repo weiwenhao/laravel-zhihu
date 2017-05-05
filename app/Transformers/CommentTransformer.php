@@ -15,10 +15,12 @@ class CommentTransformer extends TransformerAbstract {
             'content' => $model->content,
             'likes_count' => (int)$model->likes_count,
             'created_at' => $model->created_at->diffForHumans(),
-            'obj_comment_id' => $model->obj_comment_id,
             'is_author' => $model->isAuthor(),
-            'obj_username' => $model->getObjUserName($model->obj_comment_id),
-            'is_answer_author' => $model->isAnswerAuthor($model->answer_id),
+            'is_answer_author' => $model->isAnswerAuthor(),
+            'comment_user' => $model->getCommentUserInfo(),
+            'obj' => $model->getObjInfo($model->obj_username),
+            'start_reply' => false,
+            'reply_content' => null,
         ];
     }
 

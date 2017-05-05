@@ -55,90 +55,42 @@ class CommentController extends BaseController
             'content' => $request->get('content'),
             'answer_id' => $answer_id,
             'user_id' => \Auth::user()->id,
-            'obj_comment_id' => $request->get('obj_comment_id')
+            'obj_comment_id' => $request->get('obj_comment_id'),
+            'obj_username' => $request->get('obj_username')
         ]);
         return $res;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param AnswerRequest|\Illuminate\Http\Request $request
-     * @param $question_id
-     * @param $answers_id
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
-     */
-    public function update(AnswerRequest $request, $question_id, $answers_id)
-    {
-        $answer = Answer::find($answers_id);
-        if(!$answer){
-            throw new NotFoundHttpException('资源不存在'); //404相应
-        }
 
-        $answer->content = $request->get('content');
-        $answer->save();
-        return $this->response->item($answer, new AnswerTransformer());
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param $question_id
-     * @param $answers_id
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
-     */
-    public function destroy($question_id,$answers_id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function destroy($answer_id, $comment_id)
     {
         //自己只能删除自己的回答
-        $answer = Answer::find($answers_id);
-        if(!$answer){
+        $comment = Comment::find($comment_id);
+        $answer = Answer::find($answer_id);
+        if(!$comment){
             throw new NotFoundHttpException('资源不存在'); //404相应
         }
-        if(\Auth::user()->id !== $answer->user_id){
+        $user_id = \Auth::user()->id;
+        //不是该评论的作者, 并且也不是该答案的作者,则不能删除这条评论
+        if($user_id !== $comment->user_id && $user_id !== $answer->user_id){
             throw new AccessDeniedHttpException(); //403响应
         }
-        $answer->is_deleted = 1; //1表示true 已经删除
-        $answer->save();
+        $comment->delete();
         return $this->response->noContent(); //无内容响应
-    }
-
-    /**
-     * 撤销对该问题的删除
-     * @param $question_id
-     * @return \Dingo\Api\Http\Response
-     */
-    public function cancelAnswer($question_id){
-        $user_id =  \Auth::user()->id;
-        $answer = Answer::where('question_id', $question_id)->where('user_id', $user_id)->first();
-        if(!$answer){
-            throw new NotFoundHttpException('资源不存在');
-        }
-        $answer->is_deleted = 0; //0表示不删除
-        $answer->save();
-        return $this->response->noContent(); //无内容响应
-    }
-
-    public function userInfo($question_id){
-        $user = \Auth::user();
-        //查找答案表中, 寻找question_id,user_id ->找一条这样的记录,找到则回答过了
-        $answer = Answer::where('question_id', $question_id)->where('user_id', $user->id)->first();
-        //必须在answer存在的情况下才能判断是否删除了答案,否则给is_deleted一个默认值false->没有删除该答案
-        $answer?$is_deleted = $answer->is_deleted : $is_deleted=false;  //todo该判断如何优化
-        return [
-            'data' => $user,
-            'is_answered' => !empty($answer),
-            'is_deleted' => (bool) $is_deleted
-        ];
     }
 }

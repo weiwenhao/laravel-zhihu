@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 88);
+/******/ 	return __webpack_require__(__webpack_require__.s = 93);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11048,7 +11048,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(86)
+var listToStyles = __webpack_require__(91)
 
 /*
 type StyleObject = {
@@ -11736,7 +11736,7 @@ var _defaultParams2 = _interopRequireWildcard(_defaultParams);
  * Add modal + overlay to DOM
  */
 
-var _injectedHTML = __webpack_require__(56);
+var _injectedHTML = __webpack_require__(57);
 
 var _injectedHTML2 = _interopRequireWildcard(_injectedHTML);
 
@@ -22300,7 +22300,7 @@ module.exports = exports['default'];
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(50);
+__webpack_require__(51);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -22308,15 +22308,18 @@ __webpack_require__(50);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-__webpack_require__(58);
+__webpack_require__(59);
 
-__webpack_require__(53);
+__webpack_require__(54);
 
 // Vue.component('question-modal', require('./components/QuestionModal.vue'));
 Vue.component('example', __webpack_require__(35));
-Vue.component('MyNav', __webpack_require__(62)); //导航条
-Vue.component('Question', __webpack_require__(63)); //问题头
-Vue.component('Answers', __webpack_require__(65)); //答案区
+Vue.component('MyNav', __webpack_require__(64)); //导航条
+Vue.component('Question', __webpack_require__(65)); //问题头
+Vue.component('Answers', __webpack_require__(67)); //答案区
+
+Vue.component('Login', __webpack_require__(60)); //登陆组件
+Vue.component('Register', __webpack_require__(108)); //登陆组件
 
 /***/ }),
 /* 41 */
@@ -22335,7 +22338,186 @@ Vue.component('Answers', __webpack_require__(65)); //答案区
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/*组件选项定义,包括data,methods,等*/
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: '',
+    data: function data() {
+        return {
+            email: '',
+            password: '',
+            validator_error: {
+                email: null,
+                password: null
+            }
+        };
+    },
+    created: function created() {
+        this.checkLogin();
+    },
+
+    methods: {
+        sendLoginForm: function sendLoginForm() {
+            var _this = this;
+
+            //提交登陆表单
+            axios.post('/api/login', {
+                email: this.email,
+                password: this.password
+            }).then(function (response) {
+                if (response.status == 200) {
+                    //清空错误
+                    _this.validator_error.email = '';
+                    _this.validator_error.password = '';
+                    //存储token
+                    localStorage.setItem('jwt_token', response.data.token);
+                    //存储登陆状态
+                    localStorage.setItem('is_auth', 1);
+                    //存储用户信息
+                    localStorage.setItem('user_id', response.data.user.id);
+                    localStorage.setItem('user_logo', response.data.user.logo);
+
+                    //登陆成功,跳转界面
+                    var url = sessionStorage.getItem('url');
+                    if (url) {
+                        location.href = url;
+                    } else {
+                        //跳转到首页
+                        location.href = '/'; //如果不存在则跳转到首页
+                    }
+                }
+            }).catch(function (error) {
+                //                        this.clearError(email=null, password=null);
+                //清空密码
+                /*this.password = '';*/
+
+                if (error.response.status == 422) {
+                    if (error.response.data.errors.email) {
+                        _this.validator_error.email = error.response.data.errors.email[0];
+                    }
+                    if (error.response.data.errors.password) {
+                        _this.validator_error.password = error.response.data.errors.password[0];
+                    }
+                }
+
+                if (error.response.status == 401) {
+                    //401为授权失败,既表单验证通过,但用户名或者密码错误
+                    _this.password = '';
+                    _this.validator_error.password = '邮箱或密码错误';
+                }
+            });
+        },
+        clearError: function clearError(email, password) {
+            //清空错误
+            if (email) {
+                this.validator_error.email = '';
+            }
+            if (password) {
+                this.validator_error.password = '';
+            }
+        },
+        checkLogin: function checkLogin() {
+            //发送http请求判断? todo 暂时用存储状态进行判断
+            var is_auth = localStorage.getItem('is_auth');
+            if (Boolean(is_auth)) {
+                //true
+                location.href = '/'; //跳转到首页
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -22465,35 +22647,72 @@ Vue.component('Answers', __webpack_require__(65)); //答案区
             $('#comments').modal('show');
             this.getComments();
         },
-        getComments: function getComments() {
+        delComment: function delComment(comment_id) {
             var _this = this;
+
+            swal({
+                title: "你确定要删除这条评论吗？",
+                /* type: "info",*/
+                showCancelButton: true,
+                confirmButtonColor: "#3097D1",
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                closeOnConfirm: true
+            }, function () {
+                axios.delete('/api/answers/' + _this.answer_id + '/comments/' + comment_id).then(function (response) {
+                    if (response.status == 204) {
+                        swal({
+                            title: "评论已删除",
+                            timer: 800,
+                            /*         type: "success",*/
+                            showConfirmButton: false
+                        });
+                        _this.getComments(sessionStorage.getItem('comment_url'));
+                    }
+                }).catch(function (error) {
+
+                    if (error.response.status == 404) {
+                        alert(error.response.data.message);
+                    }
+                    if (error.response.status == 403) {
+                        alert(error.response.data.message);
+                    }
+                });
+            });
+        },
+        getComments: function getComments() {
+            var _this2 = this;
 
             var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/api/answers/' + this.answer_id + '/comments';
 
+            //url存一下缓存
+            sessionStorage.setItem('comment_url', url);
             axios.get(url, {}).then(function (response) {
                 //data存储
-                _this.comments = response.data.data;
+                _this2.comments = response.data.data;
                 //分页信息存储
-                _this.pagination = response.data.meta.pagination;
+                _this2.pagination = response.data.meta.pagination;
                 //是否登陆
-                _this.is_auth = response.data.meta.is_auth;
+                _this2.is_auth = response.data.meta.is_auth;
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        createComment: function createComment() {
-            var _this2 = this;
+        createComment: function createComment(content) {
+            var _this3 = this;
 
-            var obj_comment_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+            var obj_comment_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+            var obj_username = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-            if (this.content && this.is_auth) {
+            if (content && this.is_auth) {
                 axios.post('/api/answers/' + this.answer_id + '/comments', {
-                    'content': this.content,
-                    'obj_comment_id': obj_comment_id
+                    'content': content,
+                    'obj_comment_id': obj_comment_id,
+                    'obj_username': obj_username
                 }).then(function (response) {
                     if (response.status == 200 && response.data.comment.id) {
-                        _this2.content = null;
-                        _this2.getComments();
+                        _this3.content = null;
+                        _this3.getComments();
                         swal({
                             title: "评论成功",
                             timer: 1000,
@@ -22532,7 +22751,7 @@ Vue.component('Answers', __webpack_require__(65)); //答案区
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22703,7 +22922,7 @@ Vue.component('Answers', __webpack_require__(65)); //答案区
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22897,13 +23116,38 @@ Vue.component('Answers', __webpack_require__(65)); //答案区
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CreateQuestionModal_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CreateQuestionModal_vue__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CreateQuestionModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__CreateQuestionModal_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -22978,28 +23222,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'MyNav',
     data: function data() {
-        return {};
+        return {
+            user: {}
+        };
     },
 
     components: {
         CreateQuestionModal: __WEBPACK_IMPORTED_MODULE_0__CreateQuestionModal_vue___default.a
     },
-    created: function created() {},
+    created: function created() {
+        var is_auth = localStorage.getItem('is_auth');
+        if (Boolean(is_auth)) {
+            //true
+            this.user.id = localStorage.getItem('user_id');
+            this.user.logo = localStorage.getItem('user_logo');
+        }
+    },
 
     methods: {
         showModal: function showModal() {
             this.$refs.modal.showModal();
+        },
+        login: function login() {
+            location.href = '/login'; //todo 待构思
+        },
+        register: function register() {
+            location.href = '/register'; //todo 待构思
+        },
+        logout: function logout() {
+            this.is_auth = 0;
+            this.user = {};
+            //存储token
+            localStorage.removeItem('jwt_token');
+            //存储登陆状态
+            localStorage.removeItem('is_auth');
+            //存储用户信息
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('user_logo');
         }
     }
 });
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditQuestionModal_vue__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditQuestionModal_vue__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EditQuestionModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__EditQuestionModal_vue__);
 //
 //
@@ -23251,7 +23521,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23428,7 +23698,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this2.$emit('editIsDeleted');
                     }
                 }).catch(function (error) {
-
                     if (error.response.status == 404) {
                         alert(error.response.data.message);
                     }
@@ -23525,14 +23794,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Answer_vue__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Answer_vue__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Answer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Answer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Comment_CommentModal_vue__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Comment_CommentModal_vue__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Comment_CommentModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Comment_CommentModal_vue__);
 //
 //
@@ -23787,11 +24056,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(52);
+window._ = __webpack_require__(53);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -23801,7 +24070,7 @@ window._ = __webpack_require__(52);
 
 window.$ = window.jQuery = __webpack_require__(2);
 
-__webpack_require__(51);
+__webpack_require__(52);
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -23839,7 +24108,7 @@ window.axios.defaults.headers.common = {
 // });
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/*!
@@ -26223,7 +26492,7 @@ if (typeof jQuery === 'undefined') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -43312,10 +43581,10 @@ if (typeof jQuery === 'undefined') {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(72)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(75)(module)))
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/*!
@@ -49050,7 +49319,7 @@ S2.define('jquery.select2',[
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49191,7 +49460,7 @@ exports['default'] = {
 module.exports = exports['default'];
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49276,7 +49545,7 @@ exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49324,7 +49593,7 @@ exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49555,7 +49824,7 @@ exports['default'] = setParameters;
 module.exports = exports['default'];
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49590,9 +49859,9 @@ var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$r
 
 // Handle button events and keyboard events
 
-var _handleButton$handleConfirm$handleCancel = __webpack_require__(54);
+var _handleButton$handleConfirm$handleCancel = __webpack_require__(55);
 
-var _handleKeyDown = __webpack_require__(55);
+var _handleKeyDown = __webpack_require__(56);
 
 var _handleKeyDown2 = _interopRequireWildcard(_handleKeyDown);
 
@@ -49602,7 +49871,7 @@ var _defaultParams = __webpack_require__(38);
 
 var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 
-var _setParameters = __webpack_require__(57);
+var _setParameters = __webpack_require__(58);
 
 var _setParameters2 = _interopRequireWildcard(_setParameters);
 
@@ -49864,18 +50133,56 @@ if (typeof window !== 'undefined') {
 module.exports = exports['default'];
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(68)
+__webpack_require__(69)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(43),
   /* template */
-  __webpack_require__(82),
+  __webpack_require__(85),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\php\\laragon\\www\\zhihu\\resources\\assets\\js\\components\\Auth\\login.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-loader/node_modules/vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4ef0a4b2", Component.options)
+  } else {
+    hotAPI.reload("data-v-4ef0a4b2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(71)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(44),
+  /* template */
+  __webpack_require__(87),
   /* scopeId */
   null,
   /* cssModules */
@@ -49902,18 +50209,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(66)
+__webpack_require__(68)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(44),
+  __webpack_require__(45),
   /* template */
-  __webpack_require__(79),
+  __webpack_require__(83),
   /* scopeId */
   null,
   /* cssModules */
@@ -49940,14 +50247,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(45),
+  __webpack_require__(46),
   /* template */
-  __webpack_require__(80),
+  __webpack_require__(84),
   /* scopeId */
   null,
   /* cssModules */
@@ -49974,18 +50281,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(71)
+__webpack_require__(74)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(46),
+  __webpack_require__(47),
   /* template */
-  __webpack_require__(85),
+  __webpack_require__(90),
   /* scopeId */
   null,
   /* cssModules */
@@ -50012,18 +50319,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(69)
+__webpack_require__(72)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(47),
+  __webpack_require__(48),
   /* template */
-  __webpack_require__(83),
+  __webpack_require__(88),
   /* scopeId */
   null,
   /* cssModules */
@@ -50050,18 +50357,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(70)
+__webpack_require__(73)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(48),
+  __webpack_require__(49),
   /* template */
-  __webpack_require__(84),
+  __webpack_require__(89),
   /* scopeId */
   null,
   /* cssModules */
@@ -50088,18 +50395,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(67)
+__webpack_require__(70)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(49),
+  __webpack_require__(50),
   /* template */
-  __webpack_require__(81),
+  __webpack_require__(86),
   /* scopeId */
   null,
   /* cssModules */
@@ -50126,13 +50433,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(73);
+var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50152,13 +50459,39 @@ if(false) {
 }
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(74);
+var content = __webpack_require__(77);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("356480bb", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/._css-loader@0.14.5@css-loader/index.js!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-4ef0a4b2!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./login.vue", function() {
+     var newContent = require("!!../../../../../node_modules/._css-loader@0.14.5@css-loader/index.js!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-4ef0a4b2!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./login.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(78);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50178,13 +50511,13 @@ if(false) {
 }
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(75);
+var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50204,13 +50537,13 @@ if(false) {
 }
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(76);
+var content = __webpack_require__(80);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50230,13 +50563,13 @@ if(false) {
 }
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(77);
+var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50256,13 +50589,13 @@ if(false) {
 }
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50282,7 +50615,7 @@ if(false) {
 }
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -50310,49 +50643,56 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*回单框的ueditor样式修改*/\n#answer > .edui-editor {\n    border: 1px solid transparent;\n    background-color: white;\n}\n.edui-default .edui-editor-toolbarbox {\n    background: #f5f8fa;\n}\n\n", ""]);
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n.comment-body img {\n    width: 25px;\n    height :25px;\n}\n.comment-body .comment-reply {\n    color: #8590a6;\n    margin-right: 8px;\n    margin-left: 8px;\n}\n#comments .answer-comment {\n    overflow-y:auto;\n}\n", ""]);
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\nbody {\n    margin-top:49px;\n}\n.followers_num > span {\n    margin-right: 15px;\n    font-size: 16px;\n}\n.default-button {\n    margin-right: 24px;\n}\n.row {\n    margin: 15px 0px\n}\n/*问题框背景颜色透明,下边框灰色*/\n.question {\n    /*  height: 226px;*/\n    background-color: #fff;\n    border-bottom: 1px solid #e7eaf1;\n}\n/*蓝色话题标签*/\n.Tag {\n    position: relative;\n    display: inline-block;\n    height: 30px;\n    padding: 0 12px;\n    font-size: 14px;\n    line-height: 30px;\n    color: #3e7ac2;\n    vertical-align: top;\n    background: #eef4fa;\n    border-radius: 100px;\n    margin-right: 15px;\n}\n/*问题*/\n.hide-content {\n    height: 100px;\n    line-height:25px;\n    overflow:hidden;\n}\n", ""]);
-
-/***/ }),
 /* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*回单框的ueditor样式修改*/\n#edit-answer > .edui-editor {\n    border: 1px solid transparent;\n    background-color: white;\n}\n.edui-default .edui-editor-toolbarbox {\n    background: #f5f8fa;\n}\n/*收起答案框*/\n.hide-answer {\n    height: 200px;\n    line-height:25px;\n    overflow:hidden;\n}\n", ""]);
+exports.push([module.i, "\n.login-logo{\n    margin: 0 auto;\n    width: 160px;\n    height: 74px;\n}\ninput.form-control {\n    position: relative\n}\n.validator{\n    position: absolute;right: 20px;top: 0px\n}\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*回单框的ueditor样式修改*/\n#answer > .edui-editor {\n    border: 1px solid transparent;\n    background-color: white;\n}\n.edui-default .edui-editor-toolbarbox {\n    background: #f5f8fa;\n}\n\n", ""]);
 
 /***/ }),
 /* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n.comment-body img {\n    width: 25px;\n    height :25px;\n}\n.comment-body .comment-reply {\n    color: #8590a6;\n    margin-right: 8px;\n    margin-left: 8px;\n}\n#comments .answer-comment {\n    overflow-y:auto;\n}\n", ""]);
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\nbody {\n    margin-top:49px;\n}\n.followers_num > span {\n    margin-right: 15px;\n    font-size: 16px;\n}\n.default-button {\n    margin-right: 24px;\n}\n.row {\n    margin: 15px 0px\n}\n/*问题框背景颜色透明,下边框灰色*/\n.question {\n    /*  height: 226px;*/\n    background-color: #fff;\n    border-bottom: 1px solid #e7eaf1;\n}\n/*蓝色话题标签*/\n.Tag {\n    position: relative;\n    display: inline-block;\n    height: 30px;\n    padding: 0 12px;\n    font-size: 14px;\n    line-height: 30px;\n    color: #3e7ac2;\n    vertical-align: top;\n    background: #eef4fa;\n    border-radius: 100px;\n    margin-right: 15px;\n}\n/*问题*/\n.hide-content {\n    height: 100px;\n    line-height:25px;\n    overflow:hidden;\n}\n", ""]);
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*回单框的ueditor样式修改*/\n#edit-answer > .edui-editor {\n    border: 1px solid transparent;\n    background-color: white;\n}\n.edui-default .edui-editor-toolbarbox {\n    background: #f5f8fa;\n}\n/*收起答案框*/\n.hide-answer {\n    height: 200px;\n    line-height:25px;\n    overflow:hidden;\n}\n", ""]);
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n.btn-blue {\n    color: #0f88eb;\n    border: 1px solid #0f88eb;\n}\n\n", ""]);
+
+/***/ }),
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -50494,7 +50834,7 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -50633,7 +50973,136 @@ if (false) {
 }
 
 /***/ }),
-/* 81 */
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    staticClass: "form-horizontal",
+    attrs: {
+      "role": "form",
+      "method": "POST"
+    }
+  }, [_c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.email
+    }
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "email",
+      "type": "text",
+      "name": "email",
+      "value": "",
+      "required": "",
+      "autofocus": "",
+      "placeholder": "邮箱"
+    },
+    domProps: {
+      "value": (_vm.email)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(1)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.email) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.email))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.password
+    }
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.password),
+      expression: "password"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "password",
+      "type": "password",
+      "name": "password",
+      "required": "",
+      "placeholder": "密码"
+    },
+    domProps: {
+      "value": (_vm.password)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(0, 1)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.password = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.password) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.password))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('button', {
+    staticClass: "btn btn-primary btn-block",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.sendLoginForm()
+      }
+    }
+  }, [_vm._v("\n                        登陆\n                    ")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-link pull-right",
+    attrs: {
+      "href": ""
+    }
+  }, [_vm._v("\n                        无法登陆?\n                    ")])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_c('img', {
+    staticClass: "login-logo",
+    attrs: {
+      "src": "/img/bg_logo.png",
+      "alt": ""
+    }
+  }), _vm._v(" "), _c('h3', [_c('small', [_vm._v("与世界分享你的知识、经验和见解")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-4ef0a4b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -50752,7 +51221,7 @@ if (false) {
 }
 
 /***/ }),
-/* 82 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -50789,20 +51258,90 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media-body"
     }, [_c('span', {
       staticClass: "media-heading"
-    }, [_vm._v("\n                                " + _vm._s(comment.user.data.username) + " "), (comment.is_answer_author) ? _c('span', [_vm._v("（作者）")]) : _vm._e(), _vm._v(" "), (comment.obj_comment_id) ? [_c('span', {
+    }, [_vm._v("\n                                " + _vm._s(comment.user.data.username) + " "), (comment.comment_user.is_answer_author) ? _c('span', [_vm._v("（作者）")]) : _vm._e(), _vm._v(" "), (comment.obj.username) ? [_c('span', {
       staticClass: "comment-reply"
-    }, [_vm._v("回复")]), _vm._v(_vm._s(comment.obj_username) + "\n                                ")] : _vm._e()], 2), _vm._v(" "), _c('span', {
+    }, [_vm._v("回复")]), _vm._v(_vm._s(comment.obj.username) + " "), (comment.obj.is_answer_author) ? _c('span', [_vm._v("（作者）")]) : _vm._e()] : _vm._e()], 2), _vm._v(" "), _c('span', {
       staticClass: "pull-right"
     }, [_vm._v("\n                                " + _vm._s(comment.created_at) + "\n                            ")])])]), _vm._v(" "), _c('div', {
       staticClass: "row"
-    }, [_vm._v("\n                            " + _vm._s(comment.content) + "\n                        ")]), _vm._v(" "), _c('div', {
+    }, [_vm._v("\n                            " + _vm._s(comment.content) + "\n                        ")]), _vm._v(" "), (!comment.start_reply) ? _c('div', {
       staticClass: "row"
     }, [_c('span', [_c('button', {
       staticClass: "default-button"
     }, [_c('i', {
       staticClass: "fa fa-thumbs-up"
-    }), _vm._v("\n                                    " + _vm._s(comment.likes_count) + "\n                                ")]), _vm._v(" "), _vm._m(1, true)])]), _vm._v(" "), _c('hr')])
-  })), _vm._v(" "), (_vm.pagination.total_pages > 1) ? _c('div', {
+    }), _vm._v("\n                                    " + _vm._s(comment.likes_count) + "\n                                ")]), _vm._v(" "), _c('button', {
+      staticClass: "default-button",
+      on: {
+        "click": function($event) {
+          comment.start_reply = !comment.start_reply
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-reply"
+    }), _vm._v("\n                                    回复\n                                ")]), _vm._v(" "), (comment.is_author || comment.is_answer_author) ? _c('button', {
+      staticClass: "default-button",
+      on: {
+        "click": function($event) {
+          _vm.delComment(comment.id)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-trash"
+    }), _vm._v("\n                                    删除\n                                ")]) : _vm._e()])]) : _c('div', {
+      staticClass: "row"
+    }, [_c('div', [_c('textarea', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (comment.reply_content),
+        expression: "comment.reply_content"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        "rows": "1",
+        "placeholder": '回复' + comment.user.data.username
+      },
+      domProps: {
+        "value": (comment.reply_content)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          comment.reply_content = $event.target.value
+        }
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticStyle: {
+        "margin-top": "15px"
+      }
+    }, [_c('div', {
+      staticClass: " pull-right"
+    }, [_c('a', {
+      staticStyle: {
+        "margin-right": "15px"
+      },
+      attrs: {
+        "href": ""
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          comment.start_reply = !comment.start_reply
+        }
+      }
+    }, [_vm._v("取消")]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-primary",
+      class: {
+        disabled: !comment.reply_content
+      },
+      on: {
+        "click": function($event) {
+          _vm.createComment(comment.reply_content, comment.id, comment.user.data.username)
+        }
+      }
+    }, [_vm._v("评论")])])])]), _vm._v(" "), _c('hr')])
+  })), _vm._v(" "), (!_vm.pagination.total) ? _c('div', [_c('b', [_vm._v("暂时还有评论,快来占个沙发吧!")])]) : _vm._e(), _vm._v(" "), (_vm.pagination.total_pages > 1) ? _c('div', {
     staticClass: "comment-footer text-center"
   }, [_c('ul', {
     staticClass: "pagination"
@@ -50815,7 +51354,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.getComments(_vm.pagination.links.prev)
       }
     }
-  }, [_vm._m(2)]), _vm._v(" "), _vm._l((_vm.pagination.total_pages), function(n) {
+  }, [_vm._m(1)]), _vm._v(" "), _vm._l((_vm.pagination.total_pages), function(n) {
     return _c('li', {
       class: {
         active: _vm.pagination.current_page == n
@@ -50839,7 +51378,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.getComments(_vm.pagination.links.next)
       }
     }
-  }, [_vm._m(3)])], 2)]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._m(2)])], 2)]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('div', {
     staticClass: "col-md-10"
@@ -50873,7 +51412,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.createComment()
+        _vm.createComment(_vm.content)
       }
     }
   }, [_vm._v("提交")])])])])])])
@@ -50889,12 +51428,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "alt": ""
     }
   })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('button', {
-    staticClass: "default-button"
-  }, [_c('i', {
-    staticClass: "fa fa-reply"
-  }), _vm._v("\n                                    回复\n                                ")])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('a', {
     attrs: {
@@ -50927,7 +51460,7 @@ if (false) {
 }
 
 /***/ }),
-/* 83 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -51043,7 +51576,7 @@ if (false) {
 }
 
 /***/ }),
-/* 84 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -51179,7 +51712,7 @@ if (false) {
 }
 
 /***/ }),
-/* 85 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -51190,6 +51723,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "navbar-header"
   }, [_vm._m(0), _vm._v(" "), _c('a', {
+    staticStyle: {
+      "margin-left": "15px"
+    },
     attrs: {
       "href": ""
     }
@@ -51228,7 +51764,70 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showModal()
       }
     }
-  }, [_vm._v("\n                            提问\n                        ")])])]), _vm._v(" "), _vm._m(5)])])]), _vm._v(" "), _c('create-question-modal', {
+  }, [_vm._v("\n                            提问\n                        ")])])]), _vm._v(" "), _c('ul', {
+    staticClass: "nav navbar-nav navbar-right"
+  }, [_vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), (_vm.user.logo) ? [_c('li', [_c('a', {
+    staticStyle: {
+      "padding-top": "10px",
+      "padding-bottom": "10px",
+      "margin-right": "15px"
+    },
+    attrs: {
+      "href": "#",
+      "id": "menuUser",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "true"
+    }
+  }, [_c('img', {
+    staticStyle: {
+      "height": "30px",
+      "width": "30px"
+    },
+    attrs: {
+      "src": _vm.user.logo,
+      "alt": ""
+    }
+  })]), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu",
+    attrs: {
+      "aria-labelledby": "menuUser"
+    }
+  }, [_vm._m(7), _vm._v(" "), _vm._m(8), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.logout()
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-power-off"
+  }), _vm._v(" 退出")])])])])] : [_c('li', {
+    staticStyle: {
+      "margin-left": "15px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default navbar-btn btn-blue",
+    on: {
+      "click": function($event) {
+        _vm.login()
+      }
+    }
+  }, [_vm._v("登陆")])]), _vm._v(" "), _c('li', {
+    staticStyle: {
+      "margin-left": "15px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-primary navbar-btn",
+    on: {
+      "click": function($event) {
+        _vm.register()
+      }
+    }
+  }, [_vm._v("加入知乎")])])]], 2)])])]), _vm._v(" "), _c('create-question-modal', {
     ref: "modal"
   })], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -51305,21 +51904,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('ul', {
-    staticClass: "nav navbar-nav navbar-right"
-  }, [_c('li', [_c('a', {}, [_c('i', {
+  return _c('li', [_c('a', {}, [_c('i', {
     staticClass: "fa fa-bell"
-  })])]), _vm._v(" "), _c('li', [_c('a', {}, [_c('i', {
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {}, [_c('i', {
     staticClass: "fa fa-comments"
-  })])]), _vm._v(" "), _c('li', [_c('a', {
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
     attrs: {
-      "href": "/login"
+      "href": "#"
     }
-  }, [_vm._v("Login")])]), _vm._v(" "), _c('li', [_c('a', {
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  }), _vm._v(" 我的主页")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
     attrs: {
-      "href": ""
+      "href": "#"
     }
-  }, [_vm._v("Register")])])])
+  }, [_c('i', {
+    staticClass: "fa fa-gear"
+  }), _vm._v(" 设置")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -51330,7 +51937,7 @@ if (false) {
 }
 
 /***/ }),
-/* 86 */
+/* 91 */
 /***/ (function(module, exports) {
 
 /**
@@ -51363,14 +51970,523 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 87 */,
-/* 88 */
+/* 92 */,
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(40);
 __webpack_require__(41);
 module.exports = __webpack_require__(42);
 
+
+/***/ }),
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/*组件选项定义,包括data,methods,等*/
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: '',
+    data: function data() {
+        return {
+            username: '',
+            email: '',
+            password: '',
+            captcha: '',
+            validator_error: {
+                username: null,
+                email: null,
+                password: null,
+                captcha: null
+            },
+            send_email_count: 0,
+            sec: null
+        };
+    },
+
+    computed: {
+        send_email_btn: function send_email_btn() {
+            if (this.send_email_count) {
+                return this.send_email_count + 's';
+            }
+            return '获取';
+        }
+    },
+    created: function created() {
+        this.checkLogin();
+    },
+
+    methods: {
+        sendRegisterForm: function sendRegisterForm() {
+            var _this = this;
+
+            //清空一下错误
+            this.clearError(1, 1, 1, 1);
+            //提交登陆表单
+            axios.post('/api/register', {
+                //key : value
+                username: this.username,
+                email: this.email,
+                password: this.password,
+                captcha: this.captcha
+            }).then(function (response) {
+                if (response.status == 201) {
+                    //跳转到首页
+                    location.href = '/login'; //如果不存在则跳转到首页
+                }
+            }).catch(function (error) {
+                if (error.response.status == 422) {
+                    //定义错误
+                    if (error.response.data.errors.username) {
+                        _this.validator_error.username = error.response.data.errors.username[0];
+                    }
+                    if (error.response.data.errors.email) {
+                        _this.validator_error.email = error.response.data.errors.email[0];
+                    }
+                    if (error.response.data.errors.password) {
+                        _this.validator_error.password = error.response.data.errors.password[0];
+                    }
+                    if (error.response.data.errors.captcha) {
+                        _this.validator_error.captcha = error.response.data.errors.captcha[0];
+                    }
+                }
+            });
+        },
+        clearError: function clearError(username, email, password, captcha) {
+            //清空错误
+            if (username) {
+                this.validator_error.username = null;
+            }
+            if (email) {
+                this.validator_error.email = null;
+            }
+            if (password) {
+                this.validator_error.password = null;
+            }
+            if (captcha) {
+                this.validator_error.captcha = null;
+            }
+        },
+        checkLogin: function checkLogin() {
+            //发送http请求判断? todo 暂时用存储状态进行判断
+            var is_auth = localStorage.getItem('is_auth');
+            if (Boolean(is_auth)) {
+                //true
+                location.href = '/'; //跳转到首页
+            }
+        },
+        sendCaptcha: function sendCaptcha() {
+            var _this2 = this;
+
+            if (this.send_email_count == 0) {
+                axios.post('/api/register_email', {
+                    email: this.email
+                }).then(function (response) {
+                    if (response.status == 204) {
+                        _this2.setSendEmailCount(); //开始计时
+                    }
+                }).catch(function (error) {
+                    if (error.response.status == 422) {
+                        if (error.response.data.errors.email) {
+                            _this2.validator_error.email = error.response.data.errors.email[0];
+                        }
+                    }
+                });
+            }
+        },
+        setSendEmailCount: function setSendEmailCount() {
+            this.send_email_count = 60;
+            this.timer();
+        },
+
+        //循环倒计时
+        timer: function timer() {
+            if (this.send_email_count > 0) {
+                this.send_email_count--;
+                setTimeout(this.timer, 1000);
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(109)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(107),
+  /* template */
+  __webpack_require__(111),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\php\\laragon\\www\\zhihu\\resources\\assets\\js\\components\\Auth\\register.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] register.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-loader/node_modules/vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-143edeea", Component.options)
+  } else {
+    hotAPI.reload("data-v-143edeea", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(110);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("6402910e", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/._css-loader@0.14.5@css-loader/index.js!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-143edeea!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./register.vue", function() {
+     var newContent = require("!!../../../../../node_modules/._css-loader@0.14.5@css-loader/index.js!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-143edeea!../../../../../node_modules/._vue-loader@10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./register.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n.login-logo{\n    margin: 0 auto;\n    width: 160px;\n    height: 74px;\n}\ninput.form-control {\n    position: relative\n}\n.validator{\n    position: absolute;right: 20px;top: 0px\n}\n", ""]);
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default login"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    staticClass: "form-horizontal",
+    attrs: {
+      "role": "form",
+      "method": "POST"
+    }
+  }, [_c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.username
+    }
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.username),
+      expression: "username"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "username",
+      "value": "",
+      "placeholder": "用户名"
+    },
+    domProps: {
+      "value": (_vm.username)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(1, 0, 0, 0)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.username = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.username) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.username))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.email
+    }
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "email",
+      "value": "",
+      "placeholder": "邮箱"
+    },
+    domProps: {
+      "value": (_vm.email)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(0, 1, 0, 0)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.email) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.email))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.password
+    }
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.password),
+      expression: "password"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "password",
+      "name": "password",
+      "value": "",
+      "placeholder": "密码(不少于6位)"
+    },
+    domProps: {
+      "value": (_vm.password)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(0, 0, 1, 0)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.password = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.password) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.password))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': this.validator_error.captcha
+    }
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-1"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.captcha),
+      expression: "captcha"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "captcha",
+      "value": "",
+      "placeholder": "验证码"
+    },
+    domProps: {
+      "value": (_vm.captcha)
+    },
+    on: {
+      "focus": function($event) {
+        _vm.clearError(0, 0, 0, 1)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.captcha = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (this.validator_error.captcha) ? _c('span', {
+    staticClass: "help-block validator"
+  }, [_c('strong', [_vm._v(_vm._s(this.validator_error.captcha))])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-4"
+  }, [_c('button', {
+    staticClass: "btn btn-default btn-blue btn-block",
+    class: {
+      'disabled': _vm.send_email_count
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.sendCaptcha()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.send_email_btn))])]), _vm._v(" "), (_vm.send_email_count) ? _c('div', {
+    staticClass: "col-md-12",
+    staticStyle: {
+      "margin-top": "15px"
+    }
+  }, [_c('span', [_vm._v("验证码已经发送到您的邮箱,请注意查收~")])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('button', {
+    staticClass: "btn btn-primary btn-block",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.sendRegisterForm()
+      }
+    }
+  }, [_vm._v("\n                        注册\n                    ")])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_c('img', {
+    staticClass: "login-logo",
+    attrs: {
+      "src": "/img/bg_logo.png",
+      "alt": ""
+    }
+  }), _vm._v(" "), _c('h3', [_c('small', [_vm._v("与世界分享你的知识、经验和见解")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-143edeea", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

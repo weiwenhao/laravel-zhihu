@@ -27,24 +27,39 @@ class Comment extends Model
         return $this->user_id == \Auth::user()->id;
     }
 
-    public function getObjUserName($obj_user_id)
-    {
-        if(!$obj_user_id){
-            return null;
-        }
-        $user = User::find($obj_user_id);
-        return $user->username;
-    }
-
     /**
      *判断该用户是否是这个答案的作者
      */
-    public function isAnswerAuthor($answer_id)
+    public function isAnswerAuthor($user_id = null)
     {
-        if( !\Auth::check()){
-            return false;
+        if(!$user_id){
+            if( !\Auth::check()){
+                return false;
+            }
+            $user_id = \Auth::user()->id;
         }
-        $answer = Answer::find($answer_id);
-        return $answer->user_id == \Auth::user()->id;
+        $answer = Answer::where('id', $this->answer_id)->first();
+        return $answer->user_id == $user_id;
+    }
+
+    public function getObjInfo($obj_username)
+    {
+        if(!$obj_username){
+            return [
+                'obj_username' => $obj_username,
+                'is_answer_author' => false,
+            ];
+        }
+        $obj_user = User::where('username', $obj_username)->first();
+        return [
+            'username' => $obj_username,
+            'is_answer_author' => $this->isAnswerAuthor($obj_user->id)
+        ];
+    }
+
+    public function getCommentUserInfo(){
+        return [
+            'is_answer_author' => $this->isAnswerAuthor($this->user_id, $this->answer_id)
+        ];
     }
 }

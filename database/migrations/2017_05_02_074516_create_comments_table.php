@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->unsignedInteger('answer_id')->index()->comment('所属回答id');
             $table->unsignedInteger('user_id')->comment('用户id');
             $table->unsignedInteger('obj_comment_id')->nullable()->comment('回复的目标用户');
+            $table->string('obj_username', 10)->nullable()->comment('回复的目标用户');
             $table->unsignedInteger('likes_count')->default(0)->comment('被点赞的次数'); //这里应该独立一个点赞表出来
             $table->timestamps();
         });

@@ -29,10 +29,15 @@ $api->version('v1', ['namespace'=> 'App\Http\ApiController',], function ($api) {
 
     //登陆路由
     $api->post('login', 'AuthController@login');
+    //注册
+    $api->post('register', 'AuthController@register');
+    //发送邮件验证码
+    $api->post('register_email', 'AuthController@registerEmail'); //设置该接口的调用频率为1分钟一次
     //判断用户是否登陆
     $api->get('is_auth', function (){
         return response()->json(['is_auth'=>true]);
     })->middleware('api.auth');
+
     //select2数据源
     $api->get('/topics/select_data', 'TopicController@selectData');
     //问题表

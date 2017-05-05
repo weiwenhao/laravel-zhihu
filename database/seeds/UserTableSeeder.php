@@ -14,13 +14,13 @@ class UserTableSeeder extends Seeder
     {
         $weiwenhao = User::create([
             'username' => 'weiwenhao',
-            'phone_number' => '13168065609',
+            'email' => '1101140857@qq.com',
             'password' => bcrypt('123456')
         ]);
 
         $laowang = User::create([
             'username' => 'laowang',
-            'phone_number' => '18026650158',
+            'email' => '123@123.com',
             'password' => bcrypt('123456')
         ]);
 

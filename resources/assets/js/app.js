@@ -24,3 +24,7 @@ Vue.component('example', require('./components/Example.vue'));
 Vue.component('MyNav', require('./components/MyNav.vue')); //导航条
 Vue.component('Question', require('./components/Question.vue'));    //问题头
 Vue.component('Answers', require('./components/Question/Answers.vue'));    //答案区
+
+Vue.component('Login', require('./components/Auth/login.vue')); //登陆组件
+Vue.component('Register', require('./components/Auth/register.vue')); //登陆组件
+
